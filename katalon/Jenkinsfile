@@ -16,7 +16,7 @@ pipeline {
         tagFilter: '*', 
         useRepository: 'https://github.com/CBIIT/Datacommons_Automation')
 
-    string(defaultValue: "CTDC_Automation\CTDC_Automation.prj", 
+    string(defaultValue: "CTDC_Automation/CTDC_Automation.prj", 
         description: 'Enter the Katalon Project file (include the path relative to the repo root):', 
         name: 'KatalonPrj')
 
