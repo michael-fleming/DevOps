@@ -7,7 +7,7 @@ pipeline {
     parameters {
 
     gitParameter(branchFilter: 'origin/(.*)', 
-        defaultValue: 'master', 
+        defaultValue: 'JenkinsBranch', 
         name: 'Tag', 
         type: 'PT_BRANCH_TAG',
         quickFilterEnabled: false, 
@@ -109,11 +109,11 @@ pipeline {
 					alwaysLinkToLastBuild: false,
 					keepAll: false,
 					reportDir: 'results',
-					reportFiles: '*.html',
+					reportFiles: 'inex_*.html',
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
-                emailext(attachmentsPattern: 'results/*.html',
+                emailext(attachmentsPattern: 'results/index_*.html',
                     body: 'Katalon Test Results',
                     subject: 'Katalon Test Results',
                     to: 'Katalon.w1imuj982tottg1c@u.box.com')
