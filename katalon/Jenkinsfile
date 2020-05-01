@@ -58,13 +58,13 @@ pipeline {
 					selector: lastWithArtifacts(),
 					target: '$WORKSPACE/CTDC_Automation/TestData/')
 				
-#				sh label: 'Passwordfile', script: '''#!/bin/bash
-#					echo "Updating the Password File if a new version has been uploaded"
-#					if [[ -f "$WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx.new" ]]; then
-#					    echo "A New Password File has been uploaded"
-#					    rm -rf $WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx
-#						mv $WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx.new $WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx
-#					fi'''
+//				sh label: 'Passwordfile', script: '''#!/bin/bash
+//					echo "Updating the Password File if a new version has been uploaded"
+//					if [[ -f "$WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx.new" ]]; then
+//					    echo "A New Password File has been uploaded"
+//					    rm -rf $WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx
+//						mv $WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx.new $WORKSPACE/CTDC_Automation/TestData/Passwordfile.xlsx
+//					fi'''
 						
 				}
 			}
