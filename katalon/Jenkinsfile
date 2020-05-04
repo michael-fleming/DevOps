@@ -86,9 +86,11 @@ pipeline {
                     switch("${params.Browser}") {
                     case "firefox":
                         sh "yum -y install firefox"
+						browserType = "Firefox"
                         break
                     case "chrome":
                         sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install ./google-chrome-stable_current_*.rpm; wget https://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip && mv CTDC_Automation/chromedriver.exe CTDC_Automation/chromedriver.exe.bak && unzip chromedriver_linux64.zip -d CTDC_Automation/"
+						browserType = "Chrome"
                         break
                        }
                     }
@@ -107,7 +109,7 @@ pipeline {
                         rm -rf results && mkdir results
 
                         # Run Katalon Tests
-			    		katalon/katalonc -noSplash  -runMode=console -projectPath= "$WORKSPACE/$KATALON_PRJ" -retry= 0 -testSuitePath= "$KATALON_SUITE_PATH" -browserType= "${params.Browser}" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
+			    		katalon/katalonc -noSplash  -runMode=console -projectPath= "$WORKSPACE/$KATALON_PRJ" -retry= 0 -testSuitePath= "$KATALON_SUITE_PATH" -browserType= "$browserType" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 
                         '''
 					
