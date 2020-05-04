@@ -107,7 +107,7 @@ pipeline {
                         rm -rf results && mkdir results
 
                         # Run Katalon Tests
-			    		katalon/katalonc -noSplash  -runMode=console -projectPath= "$WORKSPACE/$KATALON_PRJ" -retry= 0 -testSuitePath= "$KATALON_SUITE_PATH" -browserType= "$BROWSER" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
+			    		katalon/katalonc -noSplash  -runMode=console -projectPath= "$WORKSPACE/$KATALON_PRJ" -retry= 0 -testSuitePath= "$KATALON_SUITE_PATH" -browserType= "${params.Browser}" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 
                         '''
 					
