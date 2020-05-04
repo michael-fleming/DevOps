@@ -52,7 +52,7 @@ pipeline {
 			steps {
 
 			    withCredentials([file(credentialsId: 'Katalon_Pass_FFHeadless', variable: 'pass_file')]) {
-                    sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Passwordfile.xlsx"
+                    sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Password_canine.xlsx"
                     }
 						
 				}
