@@ -24,6 +24,13 @@ pipeline {
         description: 'Enter the Katalon Suite Path (not including the test suite file):', 
         name: 'KatalonSuite')
 
+    extendedChoice( 
+        name: 'Browser', 
+        defaultValue: 'chrome', 
+        description: 'Choose the browser (headless) to use', 
+        type: 'PT_SINGLE_SELECT',
+        value: 'chrome,firefox' )
+
         }
     // options {
     // 	ansiColor('xterm')
@@ -50,11 +57,19 @@ pipeline {
             }
 		stage('set Password File'){
 			steps {
-
-			    withCredentials([file(credentialsId: 'Katalon_Pass_FFHeadless', variable: 'pass_file')]) {
-                    sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Password_canine.xlsx"
+                script {
+                    switch("${params.Browser}") {
+                    case "firefox":
+                        withCredentials([file(credentialsId: 'Katalon_Pass_FFHeadless', variable: 'pass_file')]) {
+                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Password_canine.xlsx"
+                            }
+                        break
+                    case "chrome":
+                        withCredentials([file(credentialsId: 'Katalon_Pass_CHHeadless', variable: 'pass_file')]) {
+                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Password_canine.xlsx"
+                            }
+                        break
                     }
-						
 				}
 			}
         stage('run tests'){
