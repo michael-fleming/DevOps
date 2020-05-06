@@ -112,8 +112,8 @@ pipeline {
 				
 				script {
 
-                    BROWSER = ${browserUsed}
-					PROFILE = ${profileName}
+                    BROWSER = "${browserUsed}"
+					PROFILE = "${profileName}"
 					
 					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 					    
@@ -141,13 +141,13 @@ pipeline {
 		post {
 			always {
 
-				publishHTML([allowMissing: true,
-					alwaysLinkToLastBuild: false,
-					keepAll: false,
-					reportDir: 'results',
-					reportFiles: 'inex_*.html',
-					reportName: 'HTML Report',
-					reportTitles: ''])
+				//publishHTML([allowMissing: true,
+				//	alwaysLinkToLastBuild: false,
+				//	keepAll: false,
+				//	reportDir: 'results',
+				//	reportFiles: 'inex_*.html',
+				//	reportName: 'HTML Report',
+				//	reportTitles: ''])
 
                 emailext(attachmentsPattern: 'results/index_*.html',
                     body: 'Katalon Test Results',
