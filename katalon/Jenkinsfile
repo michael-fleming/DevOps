@@ -80,7 +80,7 @@ pipeline {
         stage('run tests'){
             environment {
                 SLACK_URL           =   ""
-				BROWSER             =   "${params.Browser.value}"
+				//BROWSER             =   "${params.Browser}"
                 KATALON_PRJ         =   "${params.KatalonPrj}"
                 KATALON_SUITE_PATH  =   "${params.KatalonSuite}"
                 }
