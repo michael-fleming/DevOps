@@ -109,23 +109,8 @@ pipeline {
 
 				script {
 
-					sh 'echo "Bash Browser:     $KATALON_BROWSER - "' + "${params.Browser}"
-					
-					}
-				
-				script {
-
-					sh 'echo "Katalon Profile:     $KATALON_PROFILE - "' + "${params.Profile}"
-					
-					}
-				
-				script {
-
 					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 
-						echo "Script Browser:     $KATALON_BROWSER"
-						echo "Katalon Profile:     $KATALON_PROFILE"
-						
 						# Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
 
@@ -133,7 +118,7 @@ pipeline {
                         rm -rf results && mkdir results
 
                         # Run Katalon Tests
-			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="Firefox (headless)" -executionProfile="QA_ICDC" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
+			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="$KATALON_BROWSER (headless)" -executionProfile="$KATALON_PROFILE" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 
                         '''
 
@@ -153,10 +138,10 @@ pipeline {
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
-                //emailext(attachmentsPattern: 'results/index_*.html',
-                //    body: 'Katalon Test Results',
-                //    subject: 'Katalon Test Results',
-                //    to: 'Katalon.w1imuj982tottg1c@u.box.com')
+                emailext(attachmentsPattern: 'results/index_*.html',
+                    body: 'Katalon Test Results',
+                    subject: 'Katalon Test Results',
+                    to: 'Katalon.w1imuj982tottg1c@u.box.com')
 
 				}
 			}
