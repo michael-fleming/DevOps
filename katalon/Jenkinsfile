@@ -112,11 +112,14 @@ pipeline {
 				
 				script {
 
-                    sh label: 'Katalon-Tests', script: '''#!/bin/bash
+                    BROWSER = ${browserUsed}
+					PROFILE = ${profileName}
+					
+					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 					    
 						echo "Katalon run script"
-						echo "Browser is:  $browserUsed"
-						echo "Profile is:  $profileName"
+						echo "Browser is:  $BROWSER"
+						echo "Profile is:  $PROFILE"
 				
                         # Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
