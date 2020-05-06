@@ -100,7 +100,8 @@ pipeline {
             }
 		stage('run tests'){
             environment {
-				//BROWSER             =   "${params.Browser}"
+				KATALON_BROWSER     =   "${params.Browser}"
+				KATALON_PROFILE     =   "${params.Profile}"
                 KATALON_PRJ         =   "${params.KatalonPrj}"
                 KATALON_SUITE_PATH  =   "${params.KatalonSuite}"
                 }
@@ -108,13 +109,13 @@ pipeline {
 
 				script {
 
-					sh 'echo "Bash Browser:     "' + "${params.Browser}"
+					sh 'echo "Bash Browser:     $KATALON_BROWSER - "' + "${params.Browser}"
 					
 					}
 				
 				script {
 
-					sh 'echo "Katalon Profile:     "' + "${params.Profile}"
+					sh 'echo "Katalon Profile:     $KATALON_PROFILE - "' + "${params.Profile}"
 					
 					}
 				
