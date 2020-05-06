@@ -26,10 +26,10 @@ pipeline {
 
     extendedChoice( 
         name: 'Browser', 
-        defaultValue: 'chrome', 
+        defaultValue: 'Firefox', 
         description: 'Choose the browser (headless) to use', 
         type: 'PT_SINGLE_SELECT',
-        value: 'chrome,firefox' )
+        value: 'Chrome,Firefox' )
 		
 	extendedChoice( 
         name: 'Profile', 
@@ -109,17 +109,19 @@ pipeline {
 				script {
 				
 					echo "Browser is:    ${params.Browser}"
+					BROWSER = ${params.Browser}
 
 					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 
-                        # Set datestamp for results file
+                        echo "Bash Browser:    $BROWSER"
+						# Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
 
                         # Recreate the results directory
                         rm -rf results && mkdir results
 
                         # Run Katalon Tests
-			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="Firefox (headless)" -executionProfile="QA_ICDC" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
+			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="Firefox (headless)" -executionProfile="JENKINS" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 
                         '''
 
