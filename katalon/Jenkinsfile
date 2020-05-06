@@ -106,6 +106,9 @@ pipeline {
 				script {
 
                     sh label: 'Katalon-Tests', script: '''#!/bin/bash
+					    
+						echo "Katalon run script"
+						echo "Browser is:  ${browserUsed}"
 				
                         # Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
