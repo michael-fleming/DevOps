@@ -68,8 +68,7 @@ pipeline {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
-                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/Profiles/QA_ICDC.glbl"
-							profileName = "QA_ICDC"
+                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/Profiles/JENKINS.glbl"
                             }
                         break
                     
@@ -77,13 +76,7 @@ pipeline {
                     }
 				}
 			}
-        stage('run tests'){
-            environment {
-                SLACK_URL           =   ""
-				//BROWSER             =   "${params.Browser}"
-                KATALON_PRJ         =   "${params.KatalonPrj}"
-                KATALON_SUITE_PATH  =   "${params.KatalonSuite}"
-                }
+        stage('set Environment'){
             steps {
 			
                 script {
@@ -95,32 +88,31 @@ pipeline {
 				script {
                     switch("${params.Browser}") {
                     case "firefox":
-                        //sh "yum -y install firefox; mv CTDC_Automation/geckodriver.exe CTDC_Automation/geckodriver.exe.bak && cp katalon/configuration/resources/drivers/firefox_linux64/geckodriver CTDC_Automation/geckodriver"
 						sh "yum -y install firefox"
-                        browserUsed = "Firefox"
 						break
                     case "chrome":
-                        //sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install ./google-chrome-stable_current_*.rpm; wget https://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip && mv CTDC_Automation/chromedriver.exe CTDC_Automation/chromedriver.exe.bak && unzip chromedriver_linux64.zip -d CTDC_Automation/"
 						sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install ./google-chrome-stable_current_*.rpm; wget https://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip && mv katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver.bak && unzip chromedriver_linux64.zip -d katalon/configuration/resources/drivers/chromedriver_linux64/"
-                        browserUsed = "Chrome"
 						break
                        }
-					
-					echo "Browser is:  ${browserUsed}"
-					
                     }
-				
-				script {
 
-                    BROWSER = "${browserUsed}"
-					PROFILE = "${profileName}"
-					
-					sh label: 'Katalon-Tests', script: '''#!/bin/bash
-					    
-						echo "Katalon run script"
-						echo "Browser is:  $BROWSER"
-						echo "Profile is:  $PROFILE"
+                }
+            }
+		stage('run tests'){
+            environment {
+                SLACK_URL           =   ""
+				BROWSER             =   "${params.Browser}"
+                KATALON_PRJ         =   "${params.KatalonPrj}"
+                KATALON_SUITE_PATH  =   "${params.KatalonSuite}"
+                }
+            steps {
+
+				script {
 				
+					echo "Browser is:    $BROWSER.value"
+
+					sh label: 'Katalon-Tests', script: '''#!/bin/bash
+
                         # Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
 
@@ -131,12 +123,11 @@ pipeline {
 			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="Firefox (headless)" -executionProfile="QA_ICDC" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 
                         '''
-					
+
 					}
 
                 }
             }
-		
         }
 		post {
 			always {
