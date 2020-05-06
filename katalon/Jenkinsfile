@@ -68,7 +68,7 @@ pipeline {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
-                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/Profiles/JENKINS.glbl"
+                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/Profiles/${params.Profile}.glbl"
                             }
                         break
                     
@@ -110,8 +110,8 @@ pipeline {
 
 					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 
-                        BROWSER=${params.Browser}
-						echo "Bash Browser:    $BROWSER"
+						echo "Bash Browser:      ${params.Browser}"
+						echo "Katalon Profile:   ${params.Profile}"
 						
 						# Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
@@ -120,7 +120,7 @@ pipeline {
                         rm -rf results && mkdir results
 
                         # Run Katalon Tests
-			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="Firefox (headless)" -executionProfile="JENKINS" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
+			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="Firefox (headless)" -executionProfile="QA_ICDC" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 
                         '''
 
