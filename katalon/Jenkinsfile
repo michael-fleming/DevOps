@@ -100,8 +100,7 @@ pipeline {
             }
 		stage('run tests'){
             environment {
-                SLACK_URL           =   ""
-				BROWSER             =   "${params.Browser}"
+				//BROWSER             =   "${params.Browser}"
                 KATALON_PRJ         =   "${params.KatalonPrj}"
                 KATALON_SUITE_PATH  =   "${params.KatalonSuite}"
                 }
@@ -109,7 +108,7 @@ pipeline {
 
 				script {
 				
-					echo "Browser is:    $BROWSER.value"
+					echo "Browser is:    ${params.Browser}"
 
 					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 
@@ -132,18 +131,18 @@ pipeline {
 		post {
 			always {
 
-				//publishHTML([allowMissing: true,
-				//	alwaysLinkToLastBuild: false,
-				//	keepAll: false,
-				//	reportDir: 'results',
-				//	reportFiles: 'inex_*.html',
-				//	reportName: 'HTML Report',
-				//	reportTitles: ''])
+				publishHTML([allowMissing: true,
+					alwaysLinkToLastBuild: false,
+					keepAll: false,
+					reportDir: 'results',
+					reportFiles: 'inex_*.html',
+					reportName: 'HTML Report',
+					reportTitles: ''])
 
-                emailext(attachmentsPattern: 'results/index_*.html',
-                    body: 'Katalon Test Results',
-                    subject: 'Katalon Test Results',
-                    to: 'Katalon.w1imuj982tottg1c@u.box.com')
+                //emailext(attachmentsPattern: 'results/index_*.html',
+                //    body: 'Katalon Test Results',
+                //    subject: 'Katalon Test Results',
+                //    to: 'Katalon.w1imuj982tottg1c@u.box.com')
 
 				}
 			}
