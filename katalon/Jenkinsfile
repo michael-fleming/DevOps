@@ -30,6 +30,13 @@ pipeline {
         description: 'Choose the browser (headless) to use', 
         type: 'PT_SINGLE_SELECT',
         value: 'chrome,firefox' )
+		
+	extendedChoice( 
+        name: 'Profile', 
+        defaultValue: 'QA_ICDC', 
+        description: 'Choose the profile to use', 
+        type: 'PT_SINGLE_SELECT',
+        value: 'QA_ICDC' )
 
         }
     // options {
@@ -55,20 +62,17 @@ pipeline {
 
                 }
             }
-		stage('set Password File'){
+		stage('set Profile'){
 			steps {
                 script {
-                    switch("${params.Browser}") {
-                    case "firefox":
-                        withCredentials([file(credentialsId: 'Katalon_Pass_FFHeadless', variable: 'pass_file')]) {
-                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Password_canine.xlsx"
+                    switch("${params.Profile}") {
+                    case "QA_ICDC":
+                        withCredentials([file(credentialsId: 'QA_ICDC', variable: 'pass_file')]) {
+                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/Profiles/QA_ICDC.glbl"
+							profileName = "QA_ICDC"
                             }
                         break
-                    case "chrome":
-                        withCredentials([file(credentialsId: 'Katalon_Pass_CHHeadless', variable: 'pass_file')]) {
-                            sh "cp ${pass_file} ${WORKSPACE}/CTDC_Automation/TestData/Password_canine.xlsx"
-                            }
-                        break
+                    
                        }
                     }
 				}
@@ -91,11 +95,11 @@ pipeline {
                     switch("${params.Browser}") {
                     case "firefox":
                         sh "yum -y install firefox; mv CTDC_Automation/geckodriver.exe CTDC_Automation/geckodriver.exe.bak && cp katalon/configuration/resources/drivers/firefox_linux64/geckodriver CTDC_Automation/geckodriver"
-                        browserUsed = "firefox"
+                        browserUsed = "Firefox"
 						break
                     case "chrome":
                         sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install ./google-chrome-stable_current_*.rpm; wget https://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip && mv CTDC_Automation/chromedriver.exe CTDC_Automation/chromedriver.exe.bak && unzip chromedriver_linux64.zip -d CTDC_Automation/"
-                        browserUsed = "chrome"
+                        browserUsed = "Chrome"
 						break
                        }
 					
@@ -109,6 +113,7 @@ pipeline {
 					    
 						echo "Katalon run script"
 						echo "Browser is:  ${browserUsed}"
+						echo "Profile is:  ${profileName}"
 				
                         # Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
