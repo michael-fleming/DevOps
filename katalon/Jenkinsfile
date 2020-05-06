@@ -7,7 +7,7 @@ pipeline {
     parameters {
 
     gitParameter(branchFilter: 'origin/(.*)', 
-        defaultValue: 'Jenkins_May1', 
+        defaultValue: 'KatalonBranch', 
         name: 'Tag', 
         type: 'PT_BRANCH_TAG',
         quickFilterEnabled: false, 
