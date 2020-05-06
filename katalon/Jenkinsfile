@@ -123,8 +123,8 @@ pipeline {
 
 					sh label: 'Katalon-Tests', script: '''#!/bin/bash
 
-						#echo "Bash Browser:     " + ${params.Browser}
-						#echo "Katalon Profile:  " + ${params.Profile}
+						echo "Script Browser:     $KATALON_BROWSER"
+						echo "Katalon Profile:     $KATALON_PROFILE"
 						
 						# Set datestamp for results file
                         dateStamp=$(date +%Y%m%d%H%M)
