@@ -16,7 +16,7 @@ pipeline {
         tagFilter: '*', 
         useRepository: 'https://github.com/CBIIT/DataCommons_Automation')
 
-    string(defaultValue: "CTDC_Automation/CTDC_Automation.prj", 
+    string(defaultValue: "Commons_Automation.prj", 
         description: 'Enter the Katalon Project file (include the path relative to the repo root):', 
         name: 'KatalonPrj')
 
@@ -71,7 +71,7 @@ pipeline {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
-                            sh "projFolder=\$(echo ${KATALON_PRJ} | cut -d \'/\' -f 1) && echo ${WORKSPACE} && ls -la && echo Creating Folder ${WORKSPACE}/\$projFolder/Profiles/ && mkdir ${WORKSPACE}/\$projFolder/Profiles && cp ${pass_file} ${WORKSPACE}/\$projFolder/Profiles/${params.Profile}.glbl"
+                            sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
                             }
                         break
                     
