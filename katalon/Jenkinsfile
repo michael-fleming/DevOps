@@ -71,7 +71,7 @@ pipeline {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
-                            sh "projFolder=$(echo $KATALON_PRJ | cut -d \\'/\\' -f 1); cp ${pass_file} ${WORKSPACE}/$projFolder/Profiles/${params.Profile}.glbl"
+                            sh "projFolder=$(echo ${KATALON_PRJ} | cut -d \\'/\\' -f 1); cp ${pass_file} ${WORKSPACE}/$projFolder/Profiles/${params.Profile}.glbl"
                             }
                         break
                     
