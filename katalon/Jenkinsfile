@@ -92,7 +92,8 @@ pipeline {
                     switch("${params.Browser}") {
                     case "Firefox":
 						//sh "wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux32.tar.gz && mv katalon/configuration/resources/drivers/firefox_linux64/geckodriver katalon/configuration/resources/drivers/firefox_linux64/geckodriver.bak && tar -C katalon/configuration/resources/drivers/firefox_linux64/ -xzf geckodriver-v0.26.0-linux32.tar.gz && chown root:root katalon/configuration/resources/drivers/firefox_linux64/geckodriver && ls -la katalon/configuration/resources/drivers/firefox_linux64/ && yum -y install firefox"
-						sh "uname -a && yum -y install firefox"
+						//sh "uname -a && yum -y install firefox"
+						sh "cd /usr/local && wget http://ftp.mozilla.org/pub/firefox/releases/76.0/linux-x86_64/en-US/firefox-76.0.tar.bz2 && tar xvjf firefox-76.0.tar.bz2 && ln -s /usr/local/firefox/firefox /usr/bin/firefox"
 						break
                     case "Chrome":
 						sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install ./google-chrome-stable_current_*.rpm; wget https://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip && mv katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver.bak && unzip chromedriver_linux64.zip -d katalon/configuration/resources/drivers/chromedriver_linux64/"
