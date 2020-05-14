@@ -139,6 +139,8 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
                         rm -rf results && mkdir results
 						
 						# Create katalon user to run as
+						echo "checking useradd"
+						which useradd
 						useradd -p katalon katalon
 						
 						# assign ownership of required files to katalon user
