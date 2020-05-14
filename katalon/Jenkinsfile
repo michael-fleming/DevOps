@@ -148,6 +148,11 @@ pipeline {
                 //    body: 'Katalon Test Results',
                 //    subject: 'Katalon Test Results',
                 //    to: 'Katalon.w1imuj982tottg1c@u.box.com')
+				
+				emailext(attachmentsPattern: 'results/index_*.html',
+                    body: 'Katalon Test Results',
+                    subject: 'Katalon Test Results',
+                    to: 'michael.fleming@nih.gov')
 
 				}
 			}
