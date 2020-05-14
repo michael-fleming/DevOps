@@ -141,11 +141,16 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						# Create katalon user to run as
 						echo "checking useradd"
 						which useradd
+						which runuser
 						useradd -p katalon katalon
+						
+						id katalon
 						
 						# assign ownership of required files to katalon user
 						chown -R katalon:katalon katalon
 						chown -R katalon:katalon results
+						
+						ls -la results
 						
 						#switch to katalon user
 						su katalon
@@ -153,7 +158,7 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						whoami
 
                         # Run Katalon Tests
-			    		katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="$KATALON_BROWSER (headless)" -executionProfile="$KATALON_PROFILE" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
+			    		runuser -l katalon -c 'katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="$KATALON_BROWSER (headless)" -executionProfile="$KATALON_PROFILE" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864'
 
                         '''
 
