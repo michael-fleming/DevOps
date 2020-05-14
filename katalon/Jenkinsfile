@@ -158,7 +158,7 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						whoami
 
                         # Run Katalon Tests
-			    		runuser -l katalon -c '$WORKSPACE/katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="$KATALON_BROWSER (headless)" -executionProfile="$KATALON_PROFILE" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864'
+			    		runuser -l katalon -c '"$WORKSPACE"/katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="$KATALON_BROWSER (headless)" -executionProfile="$KATALON_PROFILE" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864'
 
                         '''
 
