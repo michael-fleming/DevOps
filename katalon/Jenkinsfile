@@ -138,6 +138,15 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
                         # Recreate the results directory
                         rm -rf results && mkdir results
 						
+						# Create katalon user to run as
+						useradd -p katalon katalon
+						
+						# assign ownership of required files to katalon user
+						chown -R katalon:katalon katalon
+						chown -R katalon:katalon results
+						
+						#switch to katalon user
+						su katalon
 						echo "User is:"
 						whoami
 
