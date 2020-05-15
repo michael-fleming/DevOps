@@ -144,8 +144,8 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						useradd -p katalon katalon
 						
 						# assign ownership of required files to katalon user
-						////chown -R katalon:katalon katalon
-						////chown -R katalon:katalon results
+						#chown -R katalon:katalon katalon
+						#chown -R katalon:katalon results
 						
 						# Run Katalon Tests
 						projectPath="$WORKSPACE/$KATALON_PRJ"
@@ -153,7 +153,7 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						reportFileName="index_$dateStamp"
 						reportFolder="$WORKSPACE/results"
 						echo $browserType
-						runuser -l katalon -c "echo '$browserType'"
+						runuser -l katalon -c 'echo "$browserType"'
 			    		#runuser -l katalon -c "$WORKSPACE/katalon/katalonc -noSplash -runMode=console -projectPath=$projectPath -retry=0 -testSuitePath=$KATALON_SUITE_PATH -browserType=$browserType -executionProfile=$KATALON_PROFILE -reportFolder=$reportFolder -reportFileName=$reportFileName -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864"
 
                         '''
