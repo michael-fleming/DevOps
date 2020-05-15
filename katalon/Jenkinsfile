@@ -144,8 +144,8 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						useradd -p katalon katalon
 						
 						# assign ownership of required files to katalon user
-						chown -R katalon:katalon katalon
-						chown -R katalon:katalon results
+						////chown -R katalon:katalon katalon
+						////chown -R katalon:katalon results
 						
 						# Run Katalon Tests
 						projectPath="$WORKSPACE/$KATALON_PRJ"
