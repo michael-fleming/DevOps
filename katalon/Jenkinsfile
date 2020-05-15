@@ -92,12 +92,10 @@ pipeline {
                     switch("${params.Browser}") {
                     case "Firefox":
 						//sh "wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux32.tar.gz && mv katalon/configuration/resources/drivers/firefox_linux64/geckodriver katalon/configuration/resources/drivers/firefox_linux64/geckodriver.bak && tar -C katalon/configuration/resources/drivers/firefox_linux64/ -xzf geckodriver-v0.26.0-linux32.tar.gz && chown root:root katalon/configuration/resources/drivers/firefox_linux64/geckodriver && ls -la katalon/configuration/resources/drivers/firefox_linux64/ && yum -y install firefox"
-						//sh "yum -y install bzip2 gtk3 && cd /usr/local && wget http://ftp.mozilla.org/pub/firefox/releases/76.0/linux-x86_64/en-US/firefox-76.0.tar.bz2 && tar -jxf firefox-76.0.tar.bz2 && chown -R root:root /usr/local/firefox && ln -s /usr/local/firefox/firefox /usr/bin/firefox"
 						sh "yum -y install firefox"
 						break
                     case "Chrome":
-						sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install google-chrome-stable_current_x86_64.rpm && wget https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_linux64.zip && mv katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver.bak && unzip chromedriver_linux64.zip -d katalon/configuration/resources/drivers/chromedriver_linux64/ && ls -la katalon/configuration/resources/drivers/chromedriver_linux64/"
-						//sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install google-chrome-stable_current_x86_64.rpm && /usr/bin/google-chrome --version"
+						sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install google-chrome-stable_current_x86_64.rpm && wget https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_linux64.zip && mv katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver.bak && unzip chromedriver_linux64.zip -d katalon/configuration/resources/drivers/chromedriver_linux64/"
 						break
                        }
                     }
@@ -122,32 +120,8 @@ pipeline {
 
                         # Recreate the results directory
                         rm -rf results && mkdir results
-						
-						# Create katalon user to run as
-						#echo "adding katalon user"
-						#useradd -p katalon katalon
-						
-						# assign ownership of required files to katalon user
-						#chown -R katalon:katalon katalon
-						#chown -R katalon:katalon results
-						#chown -R jenkins:jenkins $WORKSPACE
-						
-						#ls -la katalon
-						#ls -la results
-						
+												
 						# Run Katalon Tests
-						projectPath="$WORKSPACE/$KATALON_PRJ"
-						testSuitePath="$KATALON_SUITE_PATH"
-						browserType="$KATALON_BROWSER (headless)"
-						reportFileName="index_$dateStamp"
-						reportFolder="$WORKSPACE/results"
-						
-						#runuser -l katalon -c "echo \'$browserType\'"
-						#runuser -l katalon -c "$browsercmd"
-			    		#runuser -l katalon -c "$WORKSPACE/katalon/katalonc -noSplash -runMode=console -projectPath=$projectPath -retry=0 -testSuitePath=$KATALON_SUITE_PATH -browserType=$browserType -executionProfile=$KATALON_PROFILE -reportFolder=$reportFolder -reportFileName=$reportFileName -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864"
-						#runuser -l jenkins -c "$WORKSPACE/katalon/katalonc -noSplash -runMode=console -projectPath=$projectPath -retry=0 -testSuitePath=\'$KATALON_SUITE_PATH\' -browserType=\'$browserType\' -executionProfile=$KATALON_PROFILE -reportFolder=$reportFolder -reportFileName=$reportFileName -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864"
-						# Run Katalon Tests
-			    		#katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -browserType="$KATALON_BROWSER (headless)" -executionProfile="$KATALON_PROFILE" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864
 						katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey="1d9d7e79-dde9-45c1-9d21-b31424a47864"
 
                         '''
