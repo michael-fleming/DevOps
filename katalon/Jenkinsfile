@@ -146,6 +146,9 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						chown -R katalon:katalon katalon
 						chown -R katalon:katalon results
 						
+						ls -la katalon
+						ls -la results
+						
 						# Run Katalon Tests
 						projectPath="$WORKSPACE/$KATALON_PRJ"
 						browserType="'"$KATALON_BROWSER" (headless)'"
