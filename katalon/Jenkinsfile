@@ -154,7 +154,7 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						reportFolder="$WORKSPACE/results"
 						echo $browserType
 						browsercmd="echo $browserType"
-						runuser -l katalon -c "echo \'$browserType\'"
+						runuser -l katalon -c "echo \''$browserType\'\'"
 						#runuser -l katalon -c $browsercmd
 			    		#runuser -l katalon -c "$WORKSPACE/katalon/katalonc -noSplash -runMode=console -projectPath=$projectPath -retry=0 -testSuitePath=$KATALON_SUITE_PATH -browserType=$browserType -executionProfile=$KATALON_PROFILE -reportFolder=$reportFolder -reportFileName=$reportFileName -apiKey=1d9d7e79-dde9-45c1-9d21-b31424a47864"
 
