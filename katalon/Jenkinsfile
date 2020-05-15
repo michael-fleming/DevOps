@@ -148,7 +148,7 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						
 						# Run Katalon Tests
 						projectPath="$WORKSPACE/$KATALON_PRJ"
-						browserType="\"$KATALON_BROWSER (headless)\""
+						browserType="'$KATALON_BROWSER (headless)'"
 						reportFileName="index_$dateStamp"
 						reportFolder="$WORKSPACE/results"
 						runuser -l katalon -c "echo $browserType"
