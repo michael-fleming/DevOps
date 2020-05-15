@@ -152,6 +152,7 @@ gpgkey=https://dl.google.com/linux/linux_signing_key.pub"
 						
 						# Run Katalon Tests
 						projectPath="$WORKSPACE/$KATALON_PRJ"
+						testSuitePath="'"$KATALON_SUITE_PATH"'"
 						browserType="'"$KATALON_BROWSER" (headless)'"
 						reportFileName="index_$dateStamp"
 						reportFolder="$WORKSPACE/results"
