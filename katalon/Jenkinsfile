@@ -124,6 +124,11 @@ pipeline {
 
                         # Recreate the results directory
                         rm -rf results && mkdir results
+						
+						# 
+						TEST: get max screen resolution
+						yum -y install xrandr
+						xrandr
 												
 						# Run Katalon Tests
 						katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey="1d9d7e79-dde9-45c1-9d21-b31424a47864"
