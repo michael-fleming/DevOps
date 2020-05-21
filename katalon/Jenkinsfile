@@ -155,6 +155,16 @@ pipeline {
                     body: 'Katalon Test Results',
                     subject: 'Katalon Test Results',
                     to: 'michael.fleming@nih.gov')
+					
+				script {
+
+					sh label: 'Katalon-Results', script: '''#!/bin/bash
+
+                        echo "POST BUILD SCRIPT"
+
+                        '''
+
+					}
 
 				}
 			}
