@@ -4,7 +4,7 @@ pipeline {
         //    label 'docker-ansible'
         //    }
 		docker {
-		    image'cbiit/jdk8:latest'
+		    image 'cbiit/jdk8:latest'
 			}
         }
 	environment { 
