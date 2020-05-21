@@ -157,13 +157,18 @@ pipeline {
                     to: 'michael.fleming@nih.gov')
 					
 				script {
-
-					sh label: 'Katalon-Results', script: '''#!/bin/bash
+				
+				    withCredentials([file(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
+                    
+					    sh label: 'Katalon-Results', script: '''#!/bin/bash
 
                         echo "POST BUILD SCRIPT"
+						echo "SLACK URL IS:   $slack_url"
 
                         '''
-
+					
+                        }
+					
 					}
 
 				}
