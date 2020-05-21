@@ -158,7 +158,7 @@ pipeline {
 					
 				script {
 				
-				    withCredentials([file(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
+				    withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
                     
 					    sh label: 'Katalon-Results', script: '''#!/bin/bash
 
