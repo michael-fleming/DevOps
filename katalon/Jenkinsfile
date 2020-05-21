@@ -1,11 +1,8 @@
 pipeline {
     agent {
-        //node {
-        //    label 'docker-ansible'
-        //    }
-		docker {
-		    image 'cbiit/jdk8:latest'
-			}
+        node {
+            label 'docker-ansible'
+            }
         }
 	environment { 
         katalonVer = '7.2.6'
