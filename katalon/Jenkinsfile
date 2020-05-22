@@ -162,13 +162,13 @@ pipeline {
                     
 					    sh label: 'Katalon-Results', script: '''#!/bin/bash
 
-                        echo "POST BUILD SCRIPT"
-						
 						slackHeaders="\'Content-type: application/json\'"
 						inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
 						echo $inputFile
 						cat $inputFile
 						testCaseHeader="Test Cases/"
+						
+						echo "POST BUILD SCRIPT"
 
 						# function to read output file: index.csv
 						parse_results_csv(){
@@ -180,6 +180,7 @@ pipeline {
 							    then
 							      if [[ "$line" == $testCase* ]]
 							        then
+									  echo $line
 							          slack_message+="$(echo $line | cut -d ',' -f 1) \n "
 							      fi
 							  fi
@@ -192,8 +193,6 @@ pipeline {
 								slackError=$(eval $curlCMD)
 						        echo "Slack Error:   $slackError"
 						        }
-
-				        ls -la $WORKSPACE/results
 						
 						# Get test failures
 						#slack_message="Testing the jenkins katalon job"
