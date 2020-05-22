@@ -175,7 +175,7 @@ pipeline {
 						        }
 
 				        slack_message="Testing the jenkins katalon job"
-				        payload="\"{\\\"text\\\":\\\"$slack_message\\\"}\""
+				        payload="\\\"{\\\"text\\\":\\\"$slack_message\\\"}\\\""
 						echo "$payload"
 				        ###post_message_to_slack
 
