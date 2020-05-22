@@ -164,7 +164,7 @@ pipeline {
 
                         echo "POST BUILD SCRIPT"
 						
-						slackHeaders="\\\"Content-type: application/json\\\""
+						slackHeaders="\\\'Content-type: application/json\\\'"
 						echo "$slackHeaders"
 
 						# POST function to send to Slack
@@ -172,11 +172,11 @@ pipeline {
 						        curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
 						        echo "Sending message to slack:   $curlCMD"
 								slackError=$(eval $curlCMD)
-						        #echo "Slack Error:   $slackError"
+						        echo "Slack Error:   $slackError"
 						        }
 
 				        slack_message="Testing the jenkins katalon job"
-				        payload="\\\"{\\\"text\\\":\\\"$slack_message\\\"}\\\""
+				        payload="\\\'{\\\"text\\\":\\\"$slack_message\\\"}\\\'"
 						echo "$payload"
 				        post_message_to_slack
 
