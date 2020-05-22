@@ -191,7 +191,7 @@ pipeline {
 						        echo "Slack Error:   $slackError"
 						        }
 
-				        ll $WORKSPACE/results
+				        ls -la $WORKSPACE/results
 						
 						# Get test failures
 						#slack_message="Testing the jenkins katalon job"
