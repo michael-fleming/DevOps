@@ -167,6 +167,7 @@ pipeline {
 						slackHeaders="\'Content-type: application/json\'"
 						inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
 						echo $inputFile
+						cat $inputFile
 						testCaseHeader="Test Cases/"
 
 						# function to read output file: index.csv
