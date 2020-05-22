@@ -176,7 +176,7 @@ pipeline {
 
 							while IFS= read -r line
 							do
-							  if [[ "$line" == *FAILED ]]
+							  if [[ "$line" == *FAILED || "$line" == *ERROR ]]
 							    then
 							      if [[ "$line" == $testCase* ]]
 							        then
