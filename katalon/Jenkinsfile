@@ -164,7 +164,7 @@ pipeline {
 
                         echo "POST BUILD SCRIPT"
 						
-						slackHeaders="\"Content-type: application/json\""
+						slackHeaders='"Content-type: application/json"'
 						echo "$slackHeaders"
 
 						# POST function to send to Slack
