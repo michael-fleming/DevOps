@@ -126,7 +126,7 @@ pipeline {
                         rm -rf results && mkdir results
 						
 						# Run Katalon Tests
-						katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey="1d9d7e79-dde9-45c1-9d21-b31424a47864"
+						#katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey="1d9d7e79-dde9-45c1-9d21-b31424a47864"
 
                         '''
 
@@ -165,6 +165,7 @@ pipeline {
                         echo "POST BUILD SCRIPT"
 						
 						slackHeaders="\"Content-type: application/json\""
+						echo "$slackHeaders"
 
 						# POST function to send to Slack
 						post_message_to_slack(){
@@ -175,7 +176,7 @@ pipeline {
 
 				        slack_message="Testing the jenkins katalon job"
 				        payload="\"{\\\"text\\\":\\\"$slack_message\\\"}\""
-				        post_message_to_slack
+				        #post_message_to_slack
 
                         '''
 					
