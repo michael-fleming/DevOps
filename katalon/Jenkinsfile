@@ -175,12 +175,14 @@ pipeline {
 							slack_message="The Following Katalon Test Cases Have Failed: \n\n "
 
 							while IFS= read -r line
+							echo "LINE CHECKED IS:    $line"
 							do
 							  if [[ "$line" == *FAILED || "$line" == *ERROR ]]
+							    echo "ERROR FOUND:  $line"
 							    then
 							      if [[ "$line" == $testCase* ]]
 							        then
-									  echo $line
+									  echo "ERROR TEST CASE:  $line"
 							          slack_message+="$(echo $line | cut -d ',' -f 1) \n "
 							      fi
 							  fi
