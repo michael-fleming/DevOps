@@ -178,13 +178,13 @@ pipeline {
 							echo "LINE CHECKED IS:    $line"
 							do
 							  if [[ "$line" == *FAILED || "$line" == *ERROR ]]
+						      then
 							    echo "ERROR FOUND:  $line"
+							    if [[ "$line" == $testCaseHeader* ]]
 							    then
-							      if [[ "$line" == $testCase* ]]
-							        then
-									  echo "ERROR TEST CASE:  $line"
-							          slack_message+="$(echo $line | cut -d ',' -f 1) \n "
-							      fi
+								  echo "ERROR TEST CASE:  $line"
+							      slack_message+="$(echo $line | cut -d ',' -f 1) \n "
+							    fi
 							  fi
 							done < "$inputFile"
 							}
