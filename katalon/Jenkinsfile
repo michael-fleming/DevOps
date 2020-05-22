@@ -163,7 +163,19 @@ pipeline {
 					    sh label: 'Katalon-Results', script: '''#!/bin/bash
 
                         echo "POST BUILD SCRIPT"
-						echo "SLACK URL IS:   $slack_url"
+						
+						slackHeaders="\"Content-type: application/json\""
+
+						# POST function to send to Slack
+						post_message_to_slack(){
+						        curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
+						        slackError=$(eval $curlCMD)
+						        #echo "Slack Error:   $slackError"
+						        }
+
+				        slack_message="Testing the jenkins katalon job"
+				        payload="\"{\\\"text\\\":\\\"$slack_message\\\"}\""
+				        post_message_to_slack
 
                         '''
 					
