@@ -126,7 +126,7 @@ pipeline {
                         rm -rf results && mkdir results
 						
 						# Run Katalon Tests
-						###katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey="1d9d7e79-dde9-45c1-9d21-b31424a47864"
+						katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="index_$dateStamp" -apiKey="1d9d7e79-dde9-45c1-9d21-b31424a47864"
 
                         '''
 
@@ -165,19 +165,37 @@ pipeline {
                         echo "POST BUILD SCRIPT"
 						
 						slackHeaders="\'Content-type: application/json\'"
-						echo "$slackHeaders"
+						inputFile="$WORKSPACE/results/index.csv"
+						testCaseHeader="Test Cases/"
+
+						# function to read output file: index.csv
+						parse_results_csv(){
+							slack_message="The Following Katalon Test Cases Have Failed: \n\n "
+
+							while IFS= read -r line
+							do
+							  if [[ "$line" == *FAILED ]]
+							    then
+							      if [[ "$line" == $testCase* ]]
+							        then
+							          slack_message+="$(echo $line | cut -d ',' -f 1) \n "
+							      fi
+							  fi
+							done < "$inputFile"
+							}
 
 						# POST function to send to Slack
 						post_message_to_slack(){
 						        curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
-						        echo "Sending message to slack:   $curlCMD"
 								slackError=$(eval $curlCMD)
 						        echo "Slack Error:   $slackError"
 						        }
 
-				        slack_message="Testing the jenkins katalon job"
+				        # Get test failures
+						#slack_message="Testing the jenkins katalon job"
+						parse_results_csv
+												
 				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-						echo "$payload"
 				        post_message_to_slack
 
                         '''
