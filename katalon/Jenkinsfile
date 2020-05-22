@@ -165,7 +165,8 @@ pipeline {
                         echo "POST BUILD SCRIPT"
 						
 						slackHeaders="\'Content-type: application/json\'"
-						inputFile="$WORKSPACE/results/index.csv"
+						inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
+						echo $inputFile
 						testCaseHeader="Test Cases/"
 
 						# function to read output file: index.csv
@@ -196,6 +197,7 @@ pipeline {
 						# Get test failures
 						#slack_message="Testing the jenkins katalon job"
 						parse_results_csv
+						echo $slack_message
 												
 				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
 				        post_message_to_slack
