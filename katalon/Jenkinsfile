@@ -211,7 +211,6 @@ pipeline {
 				
 				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
 
-					slackHeaders="\'Content-type: application/json\'"
 					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
 					testCaseHeader="Test Cases/"
 
@@ -258,13 +257,15 @@ pipeline {
 									}
 
 							payload="${ERROR_OUTPUT}"
+							echo $payload
+							echo $slack_url
 							post_message_to_slack
 
 							'''
 						
 							}
 					
-					}
+						}
 
 				}
 			}
