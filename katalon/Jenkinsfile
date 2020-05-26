@@ -177,7 +177,7 @@ pipeline {
 							while IFS= read -r line
 							do
 							  echo "LINE CHECKED IS:    $line"
-							  if [[ "$line" == *FAILED || "$line" == *ERROR ]]
+							  if [[ "$line" == *"FAILED" || "$line" == *"ERROR" ]]
 						      then
 							    echo "ERROR FOUND:  $line"
 							    if [[ "$line" == $testCaseHeader* ]]
