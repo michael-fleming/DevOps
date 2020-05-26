@@ -246,7 +246,7 @@ pipeline {
 						echo "${ERROR_OUTPUT}"
 						withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
 						
-							sh (label: 'Katalon-Results-Slack', script: '''#!/bin/bash
+							sh (label: 'Katalon-Results-Slack', script: """#!/bin/bash
 
 							slackHeaders="\'Content-type: application/json\'"
 
@@ -264,7 +264,7 @@ pipeline {
 							echo $slack_url
 							post_message_to_slack
 
-							''')
+							""")
 						
 							}
 					
