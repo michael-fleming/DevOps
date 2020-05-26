@@ -173,14 +173,13 @@ pipeline {
 							while IFS= read -r line
 							do
 							  echo "LINE CHECKED IS:    $line"
-							  #if [[ "$line" == *"FAILED" || "$line" == *"ERROR" ]]
-							  if [[ "$line" =~ .*"ERROR".* ]]
+							  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
 						      then
 							    echo "ERROR FOUND:  $line"
 							    if [[ "$line" == $testCaseHeader* ]]
 							    then
 								  echo "ERROR TEST CASE:  $line"
-							      slack_message+="$(echo $line | cut -d ',' -f 1) \n "
+							      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \n "
 							    fi
 							  fi
 							done < "$inputFile"
