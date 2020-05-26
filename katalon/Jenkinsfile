@@ -168,7 +168,7 @@ pipeline {
 
 						# function to read output file: index.csv
 						parse_results_csv(){
-							slack_message='The Following Katalon Test Cases Have Failed: "\n""\n" '
+							slack_message='The Following Katalon Test Cases Have Failed: "\\n""\\n" '
 
 							while IFS= read -r line
 							do
@@ -180,7 +180,7 @@ pipeline {
 							    then
 								  echo "ERROR TEST CASE:  $line"
 							      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-)"
-								  slack_message+=' "\n" '
+								  slack_message+=' "\\n" '
 							    fi
 							  fi
 							done < "$inputFile"
@@ -196,10 +196,9 @@ pipeline {
 						# Get test failures
 						#slack_message="Testing the jenkins katalon job"
 						parse_results_csv
-						echo $slack_message
 												
 				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-						echo 
+						echo $payload
 				        post_message_to_slack
 
                         '''
