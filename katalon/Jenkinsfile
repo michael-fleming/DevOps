@@ -164,11 +164,7 @@ pipeline {
 
 						slackHeaders="\'Content-type: application/json\'"
 						inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
-						echo $inputFile
-						cat $inputFile
 						testCaseHeader="Test Cases/"
-						
-						echo "POST BUILD SCRIPT"
 
 						# function to read output file: index.csv
 						parse_results_csv(){
@@ -177,7 +173,8 @@ pipeline {
 							while IFS= read -r line
 							do
 							  echo "LINE CHECKED IS:    $line"
-							  if [[ "$line" == *"FAILED" || "$line" == *"ERROR" ]]
+							  #if [[ "$line" == *"FAILED" || "$line" == *"ERROR" ]]
+							  if [[ "$line" == *"ERROR" ]]
 						      then
 							    echo "ERROR FOUND:  $line"
 							    if [[ "$line" == $testCaseHeader* ]]
