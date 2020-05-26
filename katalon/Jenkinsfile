@@ -209,57 +209,62 @@ pipeline {
 					
 				script {
 				
-				    withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
-                    
-					    ERROR_OUTPUT = sh (label: 'Katalon-Results', script: '''#!/bin/bash
+				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
 
-						slackHeaders="\'Content-type: application/json\'"
-						inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
-						testCaseHeader="Test Cases/"
+					slackHeaders="\'Content-type: application/json\'"
+					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
+					testCaseHeader="Test Cases/"
 
-						# function to read output file: index.csv
-						parse_results_csv(){
-							slack_message='The Following Katalon Test Cases Have Failed: \\n\\n '
+					# function to read output file: index.csv
+					parse_results_csv(){
+						slack_message='The Following Katalon Test Cases Have Failed: \\n\\n '
 
-							while IFS= read -r line
-							do
-							  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
-						      then
-							    if [[ "$line" == $testCaseHeader* ]]
-							    then
-							      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
-							    fi
-							  fi
-							done < "$inputFile"
-							}
+						while IFS= read -r line
+						do
+						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
+					      then
+						    if [[ "$line" == $testCaseHeader* ]]
+						    then
+						      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
+						    fi
+						  fi
+						done < "$inputFile"
+						}
 
-						# POST function to send to Slack
-						post_message_to_slack(){
-						        curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
-								slackError=$(eval $curlCMD)
-						        echo "Slack Error:   $slackError"
-						        }
-						
 						# Get test failures
-						#slack_message="Testing the jenkins katalon job"
 						parse_results_csv
 												
 				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
 						echo $payload
-				        #post_message_to_slack
 
                         ''',
 						returnStdout: true).trim()
-					
+
                         }
-					
-					}
 					
 					script {
+				
+						withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
+						
+							sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
 
-					    echo "${ERROR_OUTPUT}"
+							slackHeaders="\'Content-type: application/json\'"
 
-                        }
+							# POST function to send to Slack
+							post_message_to_slack(){
+									curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
+									slackError=$(eval $curlCMD)
+									echo "Slack Error:   $slackError"
+									}
+
+							payload="${ERROR_OUTPUT}"
+							post_message_to_slack
+
+							'''
+						
+							}
+					
+					}
 
 				}
 			}
