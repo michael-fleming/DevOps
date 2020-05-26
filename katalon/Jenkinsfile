@@ -253,7 +253,7 @@ pipeline {
 							# POST function to send to Slack
 							post_message_to_slack(){
 									curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
-									slackError=$(eval $curlCMD)
+									slackError=\$(eval $curlCMD)
 									echo "Slack Error:   $slackError"
 									}
 
