@@ -214,12 +214,11 @@ pipeline {
 							}
 					
 						}
-						
-					def emailList = 'michael.fleming@nih.gov'
+
 					emailext(attachmentsPattern: 'results/index_*.html',
 						body: "${ERROR_OUTPUT}",
 						subject: 'Failed Katalon Tests: results attached',
-						to: "${emailList}")
+						to: 'michael.fleming@nih.gov')
 
 				}
 			}
