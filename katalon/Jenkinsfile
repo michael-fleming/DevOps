@@ -182,8 +182,9 @@ pipeline {
 						# Get test failures
 						parse_results_csv
 												
-				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-						echo $payload
+				        #payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
+						#echo $payload
+						echo $slack_message
 
                         ''',
 						returnStdout: true).trim()
@@ -205,8 +206,12 @@ pipeline {
 									echo "Slack Error:   $slackError"
 									}
 
-							payload=''' + ERROR_OUTPUT + '''
-							payload="\'$payload\'"
+							
+							#payload=''' + ERROR_OUTPUT + '''
+							#payload="\'$payload\'"
+							errorOutput=''' + ERROR_OUTPUT + '''
+							payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
+							echo $payload
 							post_message_to_slack
 
 							'''
