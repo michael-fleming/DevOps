@@ -155,58 +155,7 @@ pipeline {
                     body: 'Katalon Test Results',
                     subject: 'Katalon Test Results',
                     to: 'michael.fleming@nih.gov')
-					
-				//script {
-				//
-				//    withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
-                //    
-				//	    sh label: 'Katalon-Results', script: '''#!/bin/bash
 
-				//		slackHeaders="\'Content-type: application/json\'"
-				//		inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
-				//		testCaseHeader="Test Cases/"
-
-				//		# function to read output file: index.csv
-				//		parse_results_csv(){
-				//			slack_message='The Following Katalon Test Cases Have Failed: \\n\\n '
-
-				//			while IFS= read -r line
-				//			do
-				//			  echo "LINE CHECKED IS:    $line"
-				//			  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
-				//		      then
-				//			    echo "ERROR FOUND:  $line"
-				//			    if [[ "$line" == $testCaseHeader* ]]
-				//			    then
-				//				  echo "ERROR TEST CASE:  $line"
-				//			      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
-				//				  #slack_message+=' \\n '
-				//			    fi
-				//			  fi
-				//			done < "$inputFile"
-				//			}
-
-				//		# POST function to send to Slack
-				//		post_message_to_slack(){
-				//		        curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
-				//				slackError=$(eval $curlCMD)
-				//		        echo "Slack Error:   $slackError"
-				//		        }
-						
-				//		# Get test failures
-				//		#slack_message="Testing the jenkins katalon job"
-				//		parse_results_csv
-												
-				//       payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-				//		echo $payload
-				//        post_message_to_slack
-
-                //        '''
-					
-                //        }
-					
-				//	}
-					
 				script {
 				
 				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
@@ -242,8 +191,7 @@ pipeline {
                         }
 					
 					script {
-				
-						echo "${ERROR_OUTPUT}"
+
 						withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
 						
 							sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
@@ -258,9 +206,7 @@ pipeline {
 									}
 
 							payload=''' + ERROR_OUTPUT + '''
-							echo $payload
 							payload="\'$payload\'"
-							echo $payload
 							post_message_to_slack
 
 							'''
@@ -268,6 +214,12 @@ pipeline {
 							}
 					
 						}
+						
+					def emailList = 'michael.fleming@nih.gov'
+					emailext(attachmentsPattern: 'results/index_*.html',
+						body: "${ERROR_OUTPUT}",
+						subject: 'Failed Katalon Tests: results attached',
+						to: "${emailList}")
 
 				}
 			}
