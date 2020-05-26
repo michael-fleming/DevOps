@@ -168,7 +168,7 @@ pipeline {
 
 						# function to read output file: index.csv
 						parse_results_csv(){
-							slack_message="The Following Katalon Test Cases Have Failed: \n\n "
+							slack_message="The Following Katalon Test Cases Have Failed: \"\n\"\"\n\" "
 
 							while IFS= read -r line
 							do
@@ -179,7 +179,7 @@ pipeline {
 							    if [[ "$line" == $testCaseHeader* ]]
 							    then
 								  echo "ERROR TEST CASE:  $line"
-							      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \n "
+							      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \"\n\" "
 							    fi
 							  fi
 							done < "$inputFile"
