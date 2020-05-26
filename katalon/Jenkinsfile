@@ -174,7 +174,7 @@ pipeline {
 							do
 							  echo "LINE CHECKED IS:    $line"
 							  #if [[ "$line" == *"FAILED" || "$line" == *"ERROR" ]]
-							  if [[ "$line" == *"ERROR" ]]
+							  if [[ "$line" =~ .*"ERROR".* ]]
 						      then
 							    echo "ERROR FOUND:  $line"
 							    if [[ "$line" == $testCaseHeader* ]]
