@@ -256,7 +256,7 @@ pipeline {
 									echo "Slack Error:   $slackError"
 									}
 
-							payload="${ERROR_OUTPUT}"
+							payload="$ERROR_OUTPUT"
 							echo $payload
 							echo $slack_url
 							post_message_to_slack
