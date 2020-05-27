@@ -182,12 +182,13 @@ pipeline {
 						# Get test failures
 						parse_results_csv
 												
-				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-						echo $payload
-						#echo $slack_message
+				        #payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
+						#echo $payload
+						echo $slack_message
 
                         ''',
-						returnStdout: true).trim()
+						//returnStdout: true).trim()
+						returnStdout: true)
 
                         }
 					
@@ -206,11 +207,11 @@ pipeline {
 									echo "Slack Error:   $slackError"
 									}
 
-							payload=''' + ERROR_OUTPUT + '''
-							payload="\'$payload\'"
-							#errorOutput=''' + ERROR_OUTPUT + '''
-							#echo $errorOutput
-							#payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
+							#payload=''' + ERROR_OUTPUT + '''
+							#payload="\'$payload\'"
+							errorOutput=''' + ERROR_OUTPUT + '''
+							echo $errorOutput
+							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
 							echo "$payload"
 							post_message_to_slack
 
@@ -224,15 +225,17 @@ pipeline {
 						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
 						errorOutput=''' + ERROR_OUTPUT + '''
+						echo $errorOutput
 						awkSection="{print $4}"
 						awkSection="\'$awkSection\'"
 						awkCMD='echo $errorOutput | awk -F\\\'\\\"\\\' $awkSection'
-						echo $awkCMD
+						#echo $awkCMD
 						emailBody=$(eval $awkCMD)
 						#echo $emailBody
 
 						''',
-						returnStdout: true).trim()
+						//returnStdout: true).trim()
+						returnStdout: true)
 
 						}
 
