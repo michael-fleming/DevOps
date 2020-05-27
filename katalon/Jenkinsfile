@@ -210,7 +210,7 @@ pipeline {
 
 							#payload=''' + ERROR_OUTPUT + '''
 							#payload="\'$payload\'"
-							errorOutput=''' + ERROR_OUTPUT + '''
+							errorOutput=''' + "${ERROR_OUTPUT}" + '''
 							echo $errorOutput
 							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
 							echo "$payload"
