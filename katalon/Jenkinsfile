@@ -184,6 +184,7 @@ pipeline {
 												
 				        #payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
 						#echo $payload
+						slack_message="\'$slack_message\'"
 						echo $slack_message
 
                         ''',
@@ -210,7 +211,7 @@ pipeline {
 
 							#payload=''' + ERROR_OUTPUT + '''
 							#payload="\'$payload\'"
-							errorOutput=''' + "${ERROR_OUTPUT}" + '''
+							errorOutput=''' + ERROR_OUTPUT + '''
 							echo $errorOutput
 							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
 							echo "$payload"
