@@ -210,7 +210,7 @@ pipeline {
 									}
 
 							errorOutput=''' + ERROR_OUTPUT + '''
-							resultsFile=$(basename *html)
+							resultsFile=$(basename results/*.html)
 							errorOutput="$errorOutput \\n\\n The results of this test run can be found in Box:  $resultsFile"
 							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
 							post_message_to_slack
