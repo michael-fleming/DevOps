@@ -182,20 +182,17 @@ pipeline {
 						# Get test failures
 						parse_results_csv
 												
-				        #payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-						#echo $payload
 						slack_message="\'$slack_message\'"
 						echo $slack_message
 
                         ''',
-						//returnStdout: true).trim()
-						returnStdout: true)
+						returnStdout: true).trim()
+						//returnStdout: true)
 
                         }
 					
 					script {
 
-						echo "${ERROR_OUTPUT}"
 						withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
 						
 							sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
@@ -209,12 +206,8 @@ pipeline {
 									echo "Slack Error:   $slackError"
 									}
 
-							#payload=''' + ERROR_OUTPUT + '''
-							#payload="\'$payload\'"
 							errorOutput=''' + ERROR_OUTPUT + '''
-							echo $errorOutput
 							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
-							echo "$payload"
 							post_message_to_slack
 
 							'''
@@ -228,16 +221,16 @@ pipeline {
 
 						errorOutput=''' + ERROR_OUTPUT + '''
 						echo $errorOutput
-						awkSection="{print $4}"
-						awkSection="\'$awkSection\'"
-						awkCMD='echo $errorOutput | awk -F\\\'\\\"\\\' $awkSection'
+						#awkSection="{print $4}"
+						#awkSection="\'$awkSection\'"
+						#awkCMD='echo \\\"$errorOutput\\\" | awk -F\\\'\\\"\\\' $awkSection'
 						#echo $awkCMD
-						emailBody=$(eval $awkCMD)
+						#emailBody=$(eval $awkCMD)
 						#echo $emailBody
 
 						''',
-						//returnStdout: true).trim()
-						returnStdout: true)
+						returnStdout: true).trim()
+						//returnStdout: true)
 
 						}
 
