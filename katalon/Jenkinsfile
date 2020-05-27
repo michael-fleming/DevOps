@@ -225,9 +225,9 @@ pipeline {
 
 						errorOutput=''' + ERROR_OUTPUT + '''
 						awkCMD="echo $errorOutput | awk -F\'\\\"\' \'{print \\\$4}\'"
-						echo $awkCMD
+						#echo $awkCMD
 						emailBody=$(eval $awkCMD)
-						#echo $emailBody
+						echo $emailBody
 
 						''',
 						returnStdout: true).trim()
