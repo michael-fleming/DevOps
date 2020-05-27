@@ -226,7 +226,7 @@ pipeline {
 						errorOutput=''' + ERROR_OUTPUT + '''
 						awkSection='{print $4}'
 						awkSection="\'$awkSection\'"
-						awkCMD='echo $errorOutput | awk -F\'\\\"\' $awkSection'
+						awkCMD='echo $errorOutput | awk -F\\\'\\\"\\\' $awkSection'
 						echo $awkCMD
 						emailBody=$(eval $awkCMD)
 						#echo $emailBody
