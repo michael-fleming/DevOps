@@ -212,7 +212,7 @@ pipeline {
 							#errorOutput=''' + ERROR_OUTPUT + '''
 							#echo $errorOutput
 							#payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
-							echo $payload
+							echo "$payload"
 							#post_message_to_slack
 
 							'''
@@ -222,10 +222,10 @@ pipeline {
 						}
 
 					emailext(attachmentsPattern: 'results/index_*.html',
+						mimeType: 'text/html',
 						body: "${ERROR_OUTPUT}",
 						subject: 'Failed Katalon Tests: results attached',
-						to: 'michael.fleming@nih.gov',
-						mimeType: 'text/plain')
+						to: 'michael.fleming@nih.gov')
 
 				}
 			}
