@@ -43,6 +43,10 @@ pipeline {
         type: 'PT_SINGLE_SELECT',
         value: 'QA_ICDC,QA_CTDC' )
 
+	string(defaultValue: "michael.fleming@nih.gov", 
+        description: 'Enter a list of email adresses to notify in case of test failures:', 
+        name: 'EmailRecipients')
+
         }
     // options {
     // 	ansiColor('xterm')
@@ -165,7 +169,7 @@ pipeline {
 
 					# function to read output file: index.csv
 					parse_results_csv(){
-						slack_message='The Following Katalon Test Cases Have Failed: \\n\\n '
+						error_message='The Following Katalon Test Cases Have Failed in the latest run: \\n\\n '
 
 						while IFS= read -r line
 						do
@@ -173,7 +177,7 @@ pipeline {
 					      then
 						    if [[ "$line" == $testCaseHeader* ]]
 						    then
-						      slack_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
+						      error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
 						    fi
 						  fi
 						done < "$inputFile"
@@ -182,8 +186,8 @@ pipeline {
 						# Get test failures
 						parse_results_csv
 												
-						slack_message="\'$slack_message\'"
-						echo $slack_message
+						error_message="\'$error_message\'"
+						echo $error_message
 
                         ''',
 						returnStdout: true).trim()
@@ -206,6 +210,8 @@ pipeline {
 									}
 
 							errorOutput=''' + ERROR_OUTPUT + '''
+							resultsFile=$(basename *html)
+							errorOutput="$errorOutput \\n\\n The results of this test run can be found in Box:  $resultsFile"
 							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
 							post_message_to_slack
 
@@ -219,23 +225,20 @@ pipeline {
 						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
 						errorOutput=''' + ERROR_OUTPUT + '''
-						#echo $errorOutput
+						errorOutput="$errorOutput \\n\\n\\n The test results from the latest run can be found attached to this message and in Box."
 						emailBody=${errorOutput//\\\\n/<br>}
 						echo $emailBody
 
 						''',
 						returnStdout: true).trim()
-						//returnStdout: true)
 
 						}
-
-					echo "${EMAIL_BODY}"
 
 					emailext(attachmentsPattern: 'results/index_*.html',
 						mimeType: 'text/html',
 						body: "${EMAIL_BODY}",
 						subject: 'Failed Katalon Tests: results attached',
-						to: 'michael.fleming@nih.gov')
+						to: "${EmailRecipients}")
 
 				}
 			}
