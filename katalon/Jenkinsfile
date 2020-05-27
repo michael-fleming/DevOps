@@ -182,9 +182,9 @@ pipeline {
 						# Get test failures
 						parse_results_csv
 												
-				        payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
-						echo $payload
-						#echo $slack_message
+				        #payload="\'{\\\"text\\\":\\\"$slack_message\\\"}\'"
+						#echo $payload
+						echo $slack_message
 
                         ''',
 						returnStdout: true).trim()
@@ -208,12 +208,12 @@ pipeline {
 
 							
 							payload=''' + ERROR_OUTPUT + '''
-							payload="\'$payload\'"
+							#payload="\'$payload\'"
 							#errorOutput=''' + ERROR_OUTPUT + '''
 							#echo $errorOutput
 							#payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
 							echo $payload
-							post_message_to_slack
+							#post_message_to_slack
 
 							'''
 						
@@ -224,7 +224,8 @@ pipeline {
 					emailext(attachmentsPattern: 'results/index_*.html',
 						body: "${ERROR_OUTPUT}",
 						subject: 'Failed Katalon Tests: results attached',
-						to: 'michael.fleming@nih.gov')
+						to: 'michael.fleming@nih.gov'),
+						mimeType: 'text/plain'
 
 				}
 			}
