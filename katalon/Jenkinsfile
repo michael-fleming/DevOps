@@ -224,8 +224,8 @@ pipeline {
 					emailext(attachmentsPattern: 'results/index_*.html',
 						body: "${ERROR_OUTPUT}",
 						subject: 'Failed Katalon Tests: results attached',
-						to: 'michael.fleming@nih.gov'),
-						mimeType: 'text/plain'
+						to: 'michael.fleming@nih.gov',
+						mimeType: 'text/plain')
 
 				}
 			}
