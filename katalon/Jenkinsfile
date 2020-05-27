@@ -169,7 +169,7 @@ pipeline {
 
 					# function to read output file: index.csv
 					parse_results_csv(){
-						error_message='The Following Katalon Test Cases Have Failed in the latest run: \\n\\n '
+						error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile: \\n\\n "
 
 						while IFS= read -r line
 						do
