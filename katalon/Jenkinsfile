@@ -194,6 +194,7 @@ pipeline {
 					
 					script {
 
+						echo "${ERROR_OUTPUT}"
 						withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
 						
 							sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
@@ -239,7 +240,7 @@ pipeline {
 
 						}
 
-					echo EMAIL_BODY
+					echo "${EMAIL_BODY}"
 
 					emailext(attachmentsPattern: 'results/index_*.html',
 						mimeType: 'text/html',
