@@ -220,7 +220,7 @@ pipeline {
 
 						errorOutput=''' + ERROR_OUTPUT + '''
 						#echo $errorOutput
-						emailBody=${errorOutput//\n/<br>}
+						emailBody=${errorOutput//\\\n/<br>}
 						echo $emailBody
 
 						''',
