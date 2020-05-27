@@ -187,7 +187,6 @@ pipeline {
 
                         ''',
 						returnStdout: true).trim()
-						//returnStdout: true)
 
                         }
 					
@@ -220,13 +219,9 @@ pipeline {
 						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
 						errorOutput=''' + ERROR_OUTPUT + '''
-						echo $errorOutput
-						#awkSection="{print $4}"
-						#awkSection="\'$awkSection\'"
-						#awkCMD='echo \\\"$errorOutput\\\" | awk -F\\\'\\\"\\\' $awkSection'
-						#echo $awkCMD
-						#emailBody=$(eval $awkCMD)
-						#echo $emailBody
+						#echo $errorOutput
+						emailBody=${errorOutput//\\n/<br>}
+						echo $emailBody
 
 						''',
 						returnStdout: true).trim()
