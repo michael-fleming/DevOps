@@ -206,7 +206,6 @@ pipeline {
 									echo "Slack Error:   $slackError"
 									}
 
-							
 							payload=''' + ERROR_OUTPUT + '''
 							payload="\'$payload\'"
 							#errorOutput=''' + ERROR_OUTPUT + '''
@@ -222,17 +221,16 @@ pipeline {
 						}
 					
 					script {
+						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
-							EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
+						errorOutput=''' + ERROR_OUTPUT + '''
+						awkCMD="echo $errorOutput | awk -f\'\"\' \'{print $4}\'"
+						echo $awkCMD
+						emailBody=$(eval $awkCMD)
+						echo $emailBody
 
-							errorOutput=''' + ERROR_OUTPUT + '''
-							awkCMD="echo $errorOutput | awk -f\'\"\' \'{print $4}\'"
-							echo $awkCMD
-							emailBody=$(eval $awkCMD)
-							echo $emailBody
-
-							''',
-							returnStdout: true).trim()
+						''',
+						returnStdout: true).trim()
 
 						}
 
