@@ -224,7 +224,7 @@ pipeline {
 						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
 						errorOutput=''' + ERROR_OUTPUT + '''
-						awkSection='{print $4}'
+						awkSection="{print $4}"
 						awkSection="\'$awkSection\'"
 						awkCMD='echo $errorOutput | awk -F\\\'\\\"\\\' $awkSection'
 						echo $awkCMD
