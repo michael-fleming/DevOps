@@ -79,6 +79,7 @@ pipeline {
                 script {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
+					    BOX_EMAIL="michael.fleming@nih.gov"
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
                             sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
                             }
@@ -142,6 +143,8 @@ pipeline {
 		post {
 			always {
 
+				echo "${BOX_EMAIL}"
+				
 				publishHTML([allowMissing: true,
 					alwaysLinkToLastBuild: false,
 					keepAll: false,
@@ -158,7 +161,11 @@ pipeline {
 				emailext(attachmentsPattern: 'results/index_*.html',
                     body: 'Katalon Test Results',
                     subject: 'Katalon Test Results',
-                    to: 'michael.fleming@nih.gov')
+                    to: "${BOX_EMAIL}")
+				
+				}
+				
+			failure {
 
 				script {
 				
@@ -224,9 +231,11 @@ pipeline {
 					script {
 						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
-						errorOutput=''' + ERROR_OUTPUT + '''
-						errorOutput="$errorOutput \\n\\n\\n The test results from the latest run can be found attached to this message and in Box."
-						emailBody=${errorOutput//\\\\n/<br>}
+						emailBody=''' + ERROR_OUTPUT + '''
+						emailBody="<b> $emailBody"
+						emailBody=${emailBody/\\\\n\\\\n/<b><br><br>}
+						emailBody=${emailBody//\\\\n/<br>}
+						emailBody="$emailBody <br><br><br> The test results from the latest run can be found attached to this message and in Box."
 						echo $emailBody
 
 						''',
@@ -239,7 +248,8 @@ pipeline {
 						body: "${EMAIL_BODY}",
 						subject: 'Failed Katalon Tests: results attached',
 						to: "${EmailRecipients}")
-
+					
 				}
+
 			}
 	}
