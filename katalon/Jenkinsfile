@@ -86,7 +86,14 @@ pipeline {
                             sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
                             }
                         break
-                    
+                    case "QA_CTDC":
+						withCredentials([string(credentialsId: 'Box_Email_QA_CTDC', variable: 'box_email')]) {
+                            BOX_EMAIL="${box_email}"
+                            }
+                        withCredentials([file(credentialsId: 'Katalon_QA_CTDC', variable: 'pass_file')]) {
+                            sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
+                            }
+                        break
                        }
                     }
 				}
@@ -145,13 +152,11 @@ pipeline {
 		post {
 			always {
 
-				echo "${BOX_EMAIL}"
-				
 				publishHTML([allowMissing: true,
 					alwaysLinkToLastBuild: false,
 					keepAll: false,
 					reportDir: 'results',
-					reportFiles: 'index_*.html',
+					reportFiles: '*.html',
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
