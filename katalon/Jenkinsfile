@@ -136,7 +136,6 @@ pipeline {
 						# Set datestamp for results file
                         dateStamp=$(date +%Y%m%d)
 						reportFile="${KATALON_PROFILE}_${dateStamp}_build_${BUILD_NUMBER}"
-						echo "$reportFile"
 
                         # Recreate the results directory
                         rm -rf results && mkdir results
