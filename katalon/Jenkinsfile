@@ -43,7 +43,7 @@ pipeline {
         type: 'PT_SINGLE_SELECT',
         value: 'QA_ICDC,QA_CTDC' )
 
-	string(defaultValue: "michael.fleming@nih.gov", 
+	string(defaultValue: "", 
         description: 'Enter a list of email adresses to notify in case of test failures:', 
         name: 'EmailRecipients')
 
@@ -79,10 +79,15 @@ pipeline {
                 script {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
-					    BOX_EMAIL="michael.fleming@nih.gov"
+
+						withCredentials([file(credentialsId: 'Box_Email_QA_ICDC', variable: 'box_email')]) {
+                            BOX_EMAIL=${box_email}
+                            }
+
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
                             sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
                             }
+
                         break
                     
                        }
@@ -153,11 +158,6 @@ pipeline {
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
-                //emailext(attachmentsPattern: 'results/index_*.html',
-                //    body: 'Katalon Test Results',
-                //    subject: 'Katalon Test Results',
-                //    to: 'Katalon.w1imuj982tottg1c@u.box.com')
-				
 				emailext(attachmentsPattern: 'results/index_*.html',
                     body: 'Katalon Test Results',
                     subject: 'Katalon Test Results',
@@ -233,7 +233,7 @@ pipeline {
 
 						emailBody=''' + ERROR_OUTPUT + '''
 						emailBody="<b> $emailBody"
-						emailBody=${emailBody/\\\\n\\\\n/<b><br><br>}
+						emailBody=${emailBody/\\\\n\\\\n/<\\b><br><br>}
 						emailBody=${emailBody//\\\\n/<br>}
 						emailBody="$emailBody <br><br><br> The test results from the latest run can be found attached to this message and in Box."
 						echo $emailBody
