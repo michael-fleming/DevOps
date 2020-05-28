@@ -160,7 +160,7 @@ pipeline {
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
-				emailext(attachmentsPattern: 'results/index_*.html',
+				emailext(attachmentsPattern: 'results/*.html',
                     body: 'Katalon Test Results',
                     subject: 'Katalon Test Results',
                     to: "${BOX_EMAIL}")
@@ -245,7 +245,7 @@ pipeline {
 
 						}
 
-					emailext(attachmentsPattern: 'results/index_*.html',
+					emailext(attachmentsPattern: 'results/*.html',
 						mimeType: 'text/html',
 						body: "${EMAIL_BODY}",
 						subject: 'Failed Katalon Tests: results attached',
