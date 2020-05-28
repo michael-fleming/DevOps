@@ -135,10 +135,7 @@ pipeline {
 
 						# Set datestamp for results file
                         dateStamp=$(date +%Y%m%d)
-						reportFile="$KATALON_PROFILE_$dateStamp_build_$BUILD_NUMBER"
-						echo "$KATALON_PROFILE"
-						echo "$dateStamp"
-						echo "$BUILD_NUMBER"
+						reportFile="${KATALON_PROFILE}_${dateStamp}_build_${BUILD_NUMBER}"
 						echo "$reportFile"
 
                         # Recreate the results directory
