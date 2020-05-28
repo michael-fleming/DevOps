@@ -233,7 +233,7 @@ pipeline {
 
 						emailBody=''' + ERROR_OUTPUT + '''
 						emailBody="<b> $emailBody"
-						emailBody=${emailBody/\\\\n\\\\n/<\\b><br><br>}
+						emailBody=${emailBody/\\\\n\\\\n/</b><br><br>}
 						emailBody=${emailBody//\\\\n/<br>}
 						emailBody="$emailBody <br><br><br> The test results from the latest run can be found attached to this message and in Box."
 						echo $emailBody
