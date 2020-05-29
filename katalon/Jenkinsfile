@@ -174,14 +174,14 @@ pipeline {
 				
 				    sh label: 'Results-Parsing-Test', script: '''#!/bin/bash
 
-					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
+					inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
 					testCaseHeader="Test Cases/"
 					
 					totalLines="$(wc -l $inputFile)"
-					totalTestCases="$(grep -c 'Test Cases/' $inputFile)"
-					passedTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'PASSED')"
-					failedTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'FAILED')"
-					errorTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'ERROR')"
+					totalTestCases="$(grep -c '<testcase' $inputFile)"
+					passedTestCases="$(grep '<testcase' $inputFile | grep -c 'PASSED')"
+					failedTestCases="$(grep '<testcase' $inputFile | grep -c 'FAILED')"
+					errorTestCases="$(grep '<testcase' $inputFile | grep -c 'ERROR')"
 					
 					echo "Total Lines in file:  $totalLines"
 					echo "Total Test Cases:     $totalTestCases"
