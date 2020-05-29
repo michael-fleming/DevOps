@@ -277,18 +277,6 @@ pipeline {
 					body: "${EMAIL_BODY}",
 					subject: 'Failed Katalon Tests: results attached',
 					to: "${EmailRecipients}")
-						
-				emailext(attachmentsPattern: 'results/*.csv',
-					mimeType: 'text/html',
-					body: "${EMAIL_BODY}",
-					subject: 'Failed Katalon Tests: results attached',
-					to: "${EmailRecipients}")
-						
-				emailext(attachmentsPattern: 'results/*.xml',
-					mimeType: 'text/html',
-					body: "${EMAIL_BODY}",
-					subject: 'Failed Katalon Tests: results attached',
-					to: "${EmailRecipients}")
 					
 				}
 
