@@ -232,7 +232,7 @@ pipeline {
 				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
 				
 					inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
-					###testCaseHeader="Test Cases/"
+					testCaseHeader="Test Cases/"
 				
 					# function to read output file: index.csv
 					parse_results_xml(){
@@ -244,11 +244,11 @@ pipeline {
 						do
 						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
 					      then
-						    ###if [[ "$line" == $testCaseHeader* ]]
-						    ###then
+						    if [[ "$line" == $testCaseHeader* ]]
+						    then
 						      ###error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
 							  error_message+="$(echo $line | cut -d '=' -f 2 | cut -d '"' -f 2) \\n "
-						    ###fi
+						    fi
 						  fi
 						###done < "$inputFile"
 						done
