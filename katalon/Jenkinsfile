@@ -241,11 +241,13 @@ pipeline {
 						###while IFS= read -r line
 						for line in $(grep 'testcase' $input)
 						do
+						  echo "LINE CHECKED   $line"
 						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
 					      then
 						    ###if [[ "$line" == $testCaseHeader* ]]
 						    ###then
 						      ###error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
+							  echo "ERROR FOUND   $line"
 							  error_message+="$(echo $line | cut -d '=' -f 2 | cut -d '"' -f 2) \\n "
 						    ###fi
 						  fi
