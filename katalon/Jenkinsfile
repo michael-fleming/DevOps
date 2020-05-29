@@ -239,7 +239,7 @@ pipeline {
 						error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile: \\n\\n "
 				
 						###while IFS= read -r line
-						IFS=$'\n'
+						IFS=$'\\n'
 						for line in $(grep 'testcase' $inputFile)
 						do
 						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
@@ -247,7 +247,6 @@ pipeline {
 						    ###if [[ "$line" == $testCaseHeader* ]]
 						    ###then
 						      ###error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
-							  echo "ERROR FOUND   $line"
 							  error_message+="$(echo $line | cut -d '=' -f 2 | cut -d '"' -f 2) \\n "
 						    ###fi
 						  fi
