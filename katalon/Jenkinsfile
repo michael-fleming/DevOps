@@ -161,10 +161,10 @@ pipeline {
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
-				emailext(attachmentsPattern: 'results/*.html',
-                    body: 'Katalon Test Results',
-                    subject: 'Katalon Test Results',
-                    to: "${BOX_EMAIL}")
+				//emailext(attachmentsPattern: 'results/*.html',
+                //    body: 'Katalon Test Results',
+                //    subject: 'Katalon Test Results',
+                //    to: "${BOX_EMAIL}")
 				
 				}
 				
