@@ -177,12 +177,14 @@ pipeline {
 					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
 					testCaseHeader="Test Cases/"
 					
-					totalTestCases="$(grep -c 'Test Cases' $inputFile)"
-					failedTestCases="$(grep 'Test Cases' $inputFile | grep -c 'FAILED')"
-					errorTestCases="$(grep 'Test Cases' $inputFile | grep -c 'ERROR')"
+					totalTestCases="$(grep -c 'Test Cases/' $inputFile)"
+					passedTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'PASSED')"
+					failedTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'FAILED')"
+					errorTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'ERROR')"
 					
 					echo "Total Test Cases:     $totalTestCases"
-					echo "Failed Test Cases:     $failedTestCases"
+					echo "Failed Test Cases:    $passedTestCases"
+					echo "Failed Test Cases:    $failedTestCases"
 					echo "Error Test Cases:     $errorTestCases"
 					
 					'''
