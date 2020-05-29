@@ -184,8 +184,10 @@ pipeline {
 					echo "Total Test Cases:     $totalTestCases"
 					echo "Failed Test Cases:     $failedTestCases"
 					echo "Error Test Cases:     $errorTestCases"
+					
+					'''
 
-                        }
+                    }
 				
 				script {
 				
