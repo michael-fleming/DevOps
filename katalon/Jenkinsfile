@@ -193,99 +193,136 @@ pipeline {
 
                     }
 				
+				//script {
+				//
+				//    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
+				//
+				//	inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
+				//	testCaseHeader="Test Cases/"
+				//
+				//	# function to read output file: index.csv
+				//	parse_results_csv(){
+				//		error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile: \\n\\n "
+				//
+				//		while IFS= read -r line
+				//		do
+				//		  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
+				//	      then
+				//		    if [[ "$line" == $testCaseHeader* ]]
+				//		    then
+				//		      error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
+				//		    fi
+				//		  fi
+				//		done < "$inputFile"
+				//		}
+				//
+				//		# Get test failures
+				//		parse_results_csv
+				//								
+				//		error_message="\'$error_message\'"
+				//		echo $error_message
+				//
+                //       ''',
+				//		returnStdout: true).trim()
+				//
+                //        }
+				
 				script {
 				
 				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
-
-					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
-					testCaseHeader="Test Cases/"
-
+				
+					inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
+					###testCaseHeader="Test Cases/"
+				
 					# function to read output file: index.csv
-					parse_results_csv(){
+					parse_results_xml(){
 						error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile: \\n\\n "
-
-						while IFS= read -r line
+				
+						###while IFS= read -r line
+						for line in $(grep 'testcase' $input)
 						do
 						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
 					      then
-						    if [[ "$line" == $testCaseHeader* ]]
-						    then
-						      error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
-						    fi
+						    ###if [[ "$line" == $testCaseHeader* ]]
+						    ###then
+						      ###error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
+							  error_message+="$(echo $line | cut -d '=' -f 2 | cut -d '"' -f 2) \\n "
+						    ###fi
 						  fi
-						done < "$inputFile"
+						###done < "$inputFile"
+						done
 						}
-
+				
 						# Get test failures
-						parse_results_csv
+						parse_results_xml
 												
 						error_message="\'$error_message\'"
 						echo $error_message
-
+				
                         ''',
 						returnStdout: true).trim()
-
-                        }
+				
+                    }
 					
-					script {
+				script {
 
-						withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
+					withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
+
+						sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
+
+						slackHeaders="\'Content-type: application/json\'"
+
+						# POST function to send to Slack
+						post_message_to_slack(){
+								curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
+								slackError=$(eval $curlCMD)
+								echo "Slack Error:   $slackError"
+								}
+
+						errorOutput=''' + ERROR_OUTPUT + '''
+						resultsFile=$(basename results/*.html)
+						errorOutput="$errorOutput \\n\\n The results of this test run can be found in Box:  $resultsFile"
+						payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
+						#post_message_to_slack
+
+						'''
 						
-							sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
-
-							slackHeaders="\'Content-type: application/json\'"
-
-							# POST function to send to Slack
-							post_message_to_slack(){
-									curlCMD="curl --silent --max-time 10 --request POST --header $slackHeaders --data $payload $slack_url"
-									slackError=$(eval $curlCMD)
-									echo "Slack Error:   $slackError"
-									}
-
-							errorOutput=''' + ERROR_OUTPUT + '''
-							resultsFile=$(basename results/*.html)
-							errorOutput="$errorOutput \\n\\n The results of this test run can be found in Box:  $resultsFile"
-							payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
-							#post_message_to_slack
-
-							'''
-						
-							}
-					
 						}
 					
-					script {
-						EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
+					}
+					
+				script {
+					EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
-						emailBody=''' + ERROR_OUTPUT + '''
-						emailBody="<b> $emailBody"
-						emailBody=${emailBody/\\\\n\\\\n/</b><br><br>}
-						emailBody=${emailBody//\\\\n/<br>}
-						emailBody="$emailBody <br><br><br> The test results from the latest run can be found attached to this message and in Box."
-						echo $emailBody
+					emailBody=''' + ERROR_OUTPUT + '''
+					emailBody="<b> $emailBody"
+					emailBody=${emailBody/\\\\n\\\\n/</b><br><br>}
+					emailBody=${emailBody//\\\\n/<br>}
+					emailBody="$emailBody <br><br><br> The test results from the latest run can be found attached to this message and in Box."
+					echo $emailBody
 
-						''',
-						returnStdout: true).trim()
+					''',
+					returnStdout: true).trim()
 
-						}
+					}
 
-					emailext(attachmentsPattern: 'results/*.html',
-						mimeType: 'text/html',
-						body: "${EMAIL_BODY}",
-						subject: 'Failed Katalon Tests: results attached',
-						to: "${EmailRecipients}")
+				emailext(attachmentsPattern: 'results/*.html',
+					mimeType: 'text/html',
+					body: "${EMAIL_BODY}",
+					subject: 'Failed Katalon Tests: results attached',
+					to: "${EmailRecipients}")
 						
-					emailext(attachmentsPattern: 'results/*.csv',
-						mimeType: 'text/html',
-						body: "${EMAIL_BODY}",
-						subject: 'Failed Katalon Tests: results attached',
-						to: "${EmailRecipients}")
+				emailext(attachmentsPattern: 'results/*.csv',
+					mimeType: 'text/html',
+					body: "${EMAIL_BODY}",
+					subject: 'Failed Katalon Tests: results attached',
+					to: "${EmailRecipients}")
 						
-					emailext(attachmentsPattern: 'results/*.xml',
-						mimeType: 'text/html',
-						body: "${EMAIL_BODY}",
-						subject: 'Failed Katalon Tests: results attached',
-						to: "${EmailRecipients}")
+				emailext(attachmentsPattern: 'results/*.xml',
+					mimeType: 'text/html',
+					body: "${EMAIL_BODY}",
+					subject: 'Failed Katalon Tests: results attached',
+					to: "${EmailRecipients}")
 					
 				}
 
