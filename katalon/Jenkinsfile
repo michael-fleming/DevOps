@@ -183,7 +183,7 @@ pipeline {
 					errorTestCases="$(grep 'Test Cases/' $inputFile | grep -c 'ERROR')"
 					
 					echo "Total Test Cases:     $totalTestCases"
-					echo "Failed Test Cases:    $passedTestCases"
+					echo "Passed Test Cases:    $passedTestCases"
 					echo "Failed Test Cases:    $failedTestCases"
 					echo "Error Test Cases:     $errorTestCases"
 					
