@@ -172,7 +172,7 @@ pipeline {
 
 				script {
 				
-				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
+				    sh label: 'Results-Parsing-Test', script: '''#!/bin/bash
 
 					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
 					testCaseHeader="Test Cases/"
@@ -184,6 +184,15 @@ pipeline {
 					echo "Total Test Cases:     $totalTestCases"
 					echo "Failed Test Cases:     $failedTestCases"
 					echo "Error Test Cases:     $errorTestCases"
+
+                        }
+				
+				script {
+				
+				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
+
+					inputFile=$(exec find $WORKSPACE/results -type f -name "*.csv")
+					testCaseHeader="Test Cases/"
 
 					# function to read output file: index.csv
 					parse_results_csv(){
