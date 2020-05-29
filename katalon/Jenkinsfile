@@ -240,15 +240,15 @@ pipeline {
 				
 						###while IFS= read -r line
 						IFS=$'\\n'
-						for line in $(grep 'testcase' $inputFile)
+						for line in $(grep '<testcase' $inputFile)
 						do
 						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
 					      then
-						    if [[ "$line" == $testCaseHeader* ]]
-						    then
+						    ###if [[ "$line" == $testCaseHeader* ]]
+						    ###then
 						      ###error_message+="$(echo $line | cut -d ',' -f 1 | cut -d '/' -f2-) \\n "
 							  error_message+="$(echo $line | cut -d '=' -f 2 | cut -d '"' -f 2) \\n "
-						    fi
+						    ###fi
 						  fi
 						###done < "$inputFile"
 						done
