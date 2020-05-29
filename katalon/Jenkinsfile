@@ -239,9 +239,8 @@ pipeline {
 						error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile: \\n\\n "
 				
 						###while IFS= read -r line
-						for line in $(grep 'testcase' $input)
+						for line in $(grep 'testcase' $inputFile)
 						do
-						  echo "LINE CHECKED   $line"
 						  if [[ "$line" =~ .*"FAILED" || "$line" =~ .*"ERROR" ]]
 					      then
 						    ###if [[ "$line" == $testCaseHeader* ]]
