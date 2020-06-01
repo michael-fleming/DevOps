@@ -156,13 +156,13 @@ pipeline {
 				junit(allowEmptyResults: true,
 					testResults: 'results/*.xml')
 				
-				//publishHTML([allowMissing: true,
-				//	alwaysLinkToLastBuild: false,
-				//	keepAll: false,
-				//	reportDir: 'results',
-				//	reportFiles: '*.html',
-				//	reportName: 'HTML Report',
-				//	reportTitles: ''])
+				publishHTML([allowMissing: true,
+					alwaysLinkToLastBuild: false,
+					keepAll: false,
+					reportDir: 'results',
+					reportFiles: '*.html',
+					reportName: 'HTML Report',
+					reportTitles: ''])
 
 				//emailext(attachmentsPattern: 'results/*.html',
                 //    body: 'Katalon Test Results',
