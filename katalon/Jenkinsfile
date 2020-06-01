@@ -47,7 +47,8 @@ pipeline {
 		}
 	agent {
         node {
-            label "${env.nodeLabel}"
+            //label 'docker-katalon'
+			label ${env.nodeLabel}
             }
         }
     // options {
