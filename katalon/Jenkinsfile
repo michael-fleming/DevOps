@@ -43,6 +43,9 @@ pipeline {
         name: 'EmailRecipients')
 
         }
+	script {
+		echo "Can I put a script here?"
+		}
 	agent {
         node {
             label 'docker-katalon'
