@@ -47,7 +47,7 @@ pipeline {
 		}
 	agent {
         node {
-            label "${nodeLabel}"
+            label "${env.nodeLabel}"
             }
         }
     // options {
