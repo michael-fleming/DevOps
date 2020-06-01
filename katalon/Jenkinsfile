@@ -37,9 +37,6 @@ pipeline {
         description: 'Enter a list of email addresses to notify in case of test failures:', 
         name: 'EmailRecipients')
 
-		script {
-			echo "Can I put a script here?"
-			}
         }
 	environment { 
         katalonVer = '7.2.6'
