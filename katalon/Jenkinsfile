@@ -175,29 +175,6 @@ pipeline {
 
 				script {
 				
-				    sh label: 'Results-Parsing-Test', script: '''#!/bin/bash
-
-					inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
-					testCaseHeader="Test Cases/"
-					
-					totalLines="$(wc -l $inputFile)"
-					totalTestCases="$(grep -c '<testcase' $inputFile)"
-					passedTestCases="$(grep '<testcase' $inputFile | grep -c 'PASSED')"
-					failedTestCases="$(grep '<testcase' $inputFile | grep -c 'FAILED')"
-					errorTestCases="$(grep '<testcase' $inputFile | grep -c 'ERROR')"
-					
-					echo "Total Lines in file:  $totalLines"
-					echo "Total Test Cases:     $totalTestCases"
-					echo "Passed Test Cases:    $passedTestCases"
-					echo "Failed Test Cases:    $failedTestCases"
-					echo "Error Test Cases:     $errorTestCases"
-					
-					'''
-
-                    }
-
-				script {
-				
 				    ERROR_OUTPUT = sh (label: 'Katalon-Results-Parsing', script: '''#!/bin/bash
 				
 					inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
