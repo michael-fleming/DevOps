@@ -99,6 +99,7 @@ pipeline {
                     case "QA_ICDC":
 						withCredentials([string(credentialsId: 'Box_Email_QA_ICDC', variable: 'box_email')]) {
                             BOX_EMAIL="${box_email}"
+							BOX_URL="https://nih.app.box.com/folder/114227794149"
                             }
                         withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
                             sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
@@ -107,6 +108,7 @@ pipeline {
                     case "QA_CTDC":
 						withCredentials([string(credentialsId: 'Box_Email_QA_CTDC', variable: 'box_email')]) {
                             BOX_EMAIL="${box_email}"
+							BOX_URL="https://nih.app.box.com/folder/114241119321"
                             }
                         withCredentials([file(credentialsId: 'Katalon_QA_CTDC', variable: 'pass_file')]) {
                             sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
@@ -205,7 +207,7 @@ pipeline {
 				
 					# function to read output file: JUnit.xml
 					parse_results_xml(){
-						error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile (tested using: $Browser): \\n\\n Total Tests Cases:     $totalTestCases \\n Passed Test Cases:     $passedTestCases \\n Failed Test Cases:     $failedTestCases \\n Errored Test Cases:    $errorTestCases \\n\\n"
+						error_message="The Following Katalon Test Cases Have Failed in the latest run for $Profile (browser tested: $Browser): \\n\\n Total Tests Cases:     $totalTestCases \\n Passed Test Cases:     $passedTestCases \\n Failed Test Cases:     $failedTestCases \\n Errored Test Cases:    $errorTestCases \\n\\n"
 
 						IFS=$'\\n'
 						for line in $(grep '<testcase' $inputFile)
@@ -230,7 +232,7 @@ pipeline {
 					
 				script {
 
-					withCredentials([string(credentialsId: 'Katalon_Slack_URL', variable: 'slack_url')]) {
+					withCredentials([string(credentialsId: 'Katalon_Slack_URL_test', variable: 'slack_url')]) {
 
 						sh label: 'Katalon-Results-Slack', script: '''#!/bin/bash
 
@@ -244,10 +246,11 @@ pipeline {
 								}
 
 						errorOutput=''' + ERROR_OUTPUT + '''
+						boxUrl=''' + BOX_URL + '''
 						resultsFile=$(basename results/*.html)
-						errorOutput="$errorOutput \\n\\n The results of this test run can be found in Box:  $resultsFile"
+						errorOutput="$errorOutput \\n\\n The results of this test run can be found in Box:  <$boxUrl|$resultsFile>"
 						payload="\'{\\\"text\\\":\\\"$errorOutput\\\"}\'"
-						#post_message_to_slack
+						post_message_to_slack
 
 						'''
 						
@@ -259,10 +262,12 @@ pipeline {
 					EMAIL_BODY = sh (label: 'Get-Email-Body', script: '''#!/bin/bash
 
 					emailBody=''' + ERROR_OUTPUT + '''
+					boxUrl=''' + BOX_URL + '''
+					resultsFile=$(basename results/*.html)
 					emailBody="<b> $emailBody"
 					emailBody=${emailBody/\\\\n\\\\n/</b><br><br>}
 					emailBody=${emailBody//\\\\n/<br>}
-					emailBody="$emailBody <br><br><br> The test results from the latest run can be found attached to this message and in Box."
+					emailBody="$emailBody <br><br><br> The results of this test run can be found in Box:  <a href=\\\"$boxUrl\\\">$resultsFile</a>"
 					echo $emailBody
 
 					''',
