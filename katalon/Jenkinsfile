@@ -188,6 +188,27 @@ pipeline {
 					reportName: 'HTML Report',
 					reportTitles: ''])
 
+				script {
+
+					withCredentials([usernamePassword(credentialsId: 'Katalon_wiki_results', passwordVariable: 'passwd', usernameVariable: 'user')]) {
+
+						sh label: 'Katalon-Results-Confluence', script: '''#!/bin/bash
+
+						pageID="434110502"
+						resultsURL="https://wiki.nci.nih.gov/rest/api/content/$pageID/child/attachment"
+						resultsFile=$(basename results/*.html)
+						creds="\'$user:$passwd\'"
+						curlCMD="curl -D- -u $creds -X POST -H \\\"X-Atlassian-Token: nocheck\\\" -F \\\"file=@$resultsFile\\\" $resultsURL"
+						echo $curlCMD
+						curlError=$(eval $curlCMD)
+						echo "Confluence Error:   $curlError"
+
+						'''
+						
+						}
+					
+					}
+
 				//emailext(attachmentsPattern: 'results/*.html',
                 //    body: 'Katalon Test Results',
                 //    subject: 'Katalon Test Results',
@@ -277,25 +298,6 @@ pipeline {
 					''',
 					returnStdout: true).trim()
 
-					}
-
-				script {
-
-					withCredentials([usernamePassword(credentialsId: 'Katalon_wiki_results', passwordVariable: 'passwd', usernameVariable: 'user')]) {
-
-						sh label: 'Katalon-Results-Confluence', script: '''#!/bin/bash
-
-						pageID="434110502"
-						resultsURL="https://wiki.nci.nih.gov/rest/api/content/$pageID/child/attachment"
-						resultsFile=$(basename results/*.html)
-						creds="\'$user:$passwd\'"
-						curlCMD="curl -D- -u $creds -X POST -H \\\"X-Atlassian-Token: nocheck\\\" -F \\\"file=@$resultsFile\\\" $resultsURL"
-						echo $curlCMD
-
-						'''
-						
-						}
-					
 					}
 
 				emailext(attachmentsPattern: 'results/*.html',
