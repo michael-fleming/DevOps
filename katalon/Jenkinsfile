@@ -97,6 +97,7 @@ pipeline {
                 script {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
+						WIKI_PAGE="434110502"
 						withCredentials([string(credentialsId: 'Box_Email_QA_ICDC', variable: 'box_email')]) {
                             BOX_EMAIL="${box_email}"
                             }
@@ -108,6 +109,7 @@ pipeline {
                             }
                         break
                     case "QA_CTDC":
+						WIKI_PAGE="434110502"
 						withCredentials([string(credentialsId: 'Box_Email_QA_CTDC', variable: 'box_email')]) {
                             BOX_EMAIL="${box_email}"
                             }
@@ -194,7 +196,7 @@ pipeline {
 
 						sh label: 'Katalon-Results-Confluence', script: '''#!/bin/bash
 
-						pageID="434110502"
+						pageID=''' + WIKI_PAGE + '''
 						resultsURL="https://wiki.nci.nih.gov/rest/api/content/$pageID/child/attachment"
 						resultsFile=$(basename results/*.html)
 						creds="\'$user:$passwd\'"
