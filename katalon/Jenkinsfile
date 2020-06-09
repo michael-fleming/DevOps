@@ -196,12 +196,30 @@ pipeline {
 
 						sh label: 'Katalon-Results-Confluence', script: '''#!/bin/bash
 
+						inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
 						pageID=''' + WIKI_PAGE + '''
+						creds="\'$user:$passwd\'"
+						
+						# get updated page text
+						totalTestCases="$(grep -c '<testcase' $inputFile)"
+						passedTestCases="$(grep '<testcase' $inputFile | grep -c 'PASSED')"
+						failedTestCases="$(grep '<testcase' $inputFile | grep -c 'FAILED')"
+						errorTestCases="$(grep '<testcase' $inputFile | grep -c 'ERROR')"
+						pageMessage="<p>Test results from the latest Katalon Test for $Profile (browser tested: $Browser): <br /><br /> Total Tests Cases:     $totalTestCases <br /> Passed Test Cases:     $passedTestCases <br /> Failed Test Cases:     $failedTestCases <br /> Errored Test Cases:    $errorTestCases </p><p><br /></p><p>"
+						pageText=$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=body.storage | grep -o -P '(?<=<p>).*(?=</p>)' | grep -o -P '(?=<ac).*')
+						pageMessage="$pageMessage $pageText </p>"
+						echo $pageMessage
+						
+						# get page version
+						pageVer=$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/434110502?expand=version.number | grep -oP '(?<=number":).*' | awk  -F, '{print $1}')
+						echo $pageVer
+						pageVer+=1
+						echo $pageVer
+						
+						# add latest results as attachment
 						resultsURL="https://wiki.nci.nih.gov/rest/api/content/$pageID/child/attachment"
 						resultsFile=$(basename results/*.html)
-						creds="\'$user:$passwd\'"
 						curlCMD="curl -D- -u $creds -X POST -H \\\"X-Atlassian-Token: nocheck\\\" -F \\\"file=@results/$resultsFile\\\" $resultsURL"
-						echo $curlCMD
 						curlError=$(eval $curlCMD)
 						echo "Confluence Error:   $curlError"
 
