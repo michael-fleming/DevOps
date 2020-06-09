@@ -206,14 +206,16 @@ pipeline {
 						failedTestCases="$(grep '<testcase' $inputFile | grep -c 'FAILED')"
 						errorTestCases="$(grep '<testcase' $inputFile | grep -c 'ERROR')"
 						pageMessage="<p>Test results from the latest Katalon Test for $Profile (browser tested: $Browser): <br /><br /> Total Tests Cases:     $totalTestCases <br /> Passed Test Cases:     $passedTestCases <br /> Failed Test Cases:     $failedTestCases <br /> Errored Test Cases:    $errorTestCases </p><p><br /></p><p>"
-						pageText="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=body.storage | grep -o -P '(?<=<p>).*(?=</p>)' | grep -o -P '(?=<ac).*')"
+						#pageText="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=body.storage | grep -o -P '(?<=<p>).*(?=</p>)' | grep -o -P '(?=<ac).*')"
+						pageText="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=body.storage)"
 						pageMessage="$pageMessage $pageText </p>"
 						echo $pageMessage
 						
 						# get page version
-						pageVer="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/434110502?expand=version.number | grep -oP '(?<=number":).*' | awk  -F, '{print $1}')"
-						echo "pageVer:     $pageVer"
-						pageVer="$((pageVer+1))"
+						#pageVer="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/434110502?expand=version.number | grep -oP '(?<=number":).*' | awk  -F, '{print $1}')"
+						pageVer="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/434110502?expand=version.number)"
+						#echo "pageVer:     $pageVer"
+						#pageVer="$((pageVer+1))"
 						echo "pageVer:     $pageVer"
 						
 						# add latest results as attachment
