@@ -202,7 +202,7 @@ pipeline {
 						resultsFile=$(exec find $WORKSPACE/results -type f -name "*.html" -printf "%f\n")
 						pageID=''' + WIKI_PAGE + '''
 						pageName=''' + WIKI_NAME + '''
-						echo $pageName
+						echo "pageName:     $pageName"
 						creds="\'$user:$passwd\'"
 						
 						# get updated page text
