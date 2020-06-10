@@ -199,7 +199,7 @@ pipeline {
 						sh label: 'Katalon-Results-Confluence', script: '''#!/bin/bash
 
 						inputFile=$(exec find $WORKSPACE/results -type f -name "*.xml")
-						resultsFile=$(exec find $WORKSPACE/results -type f -name "*.html")
+						resultsFile=$(exec find $WORKSPACE/results -type f -name "*.html" -printf "%f\n")
 						pageID=''' + WIKI_PAGE + '''
 						pageName=''' + WIKI_NAME + '''
 						creds="\'$user:$passwd\'"
@@ -224,7 +224,7 @@ pipeline {
 						echo "pageVer:     $pageVer"
 
 						# update page content
-						curlCMD="curl -u $creds -X PUT -H 'Content-Type: application/json' -d '{\\\"id\\\":\\\"$pageID\\\",\\\"type\\\":\\\"page\\\", \\\"title\\\":\\\"$pageName\\\",\\\"body\\\":{\\\"storage\\\":{\\\"value\\\": \\\"$pageMessage\\\",\\\"representation\\\":\\\"storage\\\"}}, \\\"version\\\":{\\\"number\\\":$pageVer}}' https://wiki.nci.nih.gov/rest/api/content/$$pageID"
+						curlCMD="curl -u $creds -X PUT -H 'Content-Type: application/json' -d \'{\\\"id\\\":\\\"$pageID\\\",\\\"type\\\":\\\"page\\\", \\\"title\\\":\\\"$pageName\\\",\\\"body\\\":{\\\"storage\\\":{\\\"value\\\": \\\"$pageMessage\\\",\\\"representation\\\":\\\"storage\\\"}}, \\\"version\\\":{\\\"number\\\":$pageVer}}\' https://wiki.nci.nih.gov/rest/api/content/$pageID"
 						echo "curlCMD:    $curlCMD"
 						curlError=$(eval $curlCMD)
 						echo "Confluence Error:   $curlError"
