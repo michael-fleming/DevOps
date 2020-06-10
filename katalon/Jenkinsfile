@@ -202,9 +202,7 @@ pipeline {
 						resultsFile=$(exec find $WORKSPACE/results -type f -name "*.html" -printf "%f\n")
 						pageID=''' + WIKI_PAGE + '''
 						pageName=''' + WIKI_NAME + '''
-						echo "pageName:     $pageName"
 						pageName="$pageName Automated Test Results"
-						echo "pageName:     $pageName"
 						creds="\'$user:$passwd\'"
 						
 						# get updated page text
@@ -216,19 +214,14 @@ pipeline {
 						curlCMD="curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=body.storage | grep -o -P '(?<=<p>).*(?=</p>)' | grep -o -P '(?=<ac).*'"
 						pageText=$(eval $curlCMD)
 						pageMessage="$pageMessage $pageText </p>"
-						echo $pageMessage
 						
 						# get page version
 						curlCMD="curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=version.number | grep -oP '(?<=number\\\":).*' | awk -F, '{print \\$1}'"
-						echo "curlCMD:     $curlCMD"
 						pageVer=$(eval $curlCMD)
-						echo "pageVer:     $pageVer"
 						pageVer="$((pageVer+1))"
-						echo "pageVer:     $pageVer"
 
 						# update page content
 						curlCMD="curl -u $creds -X PUT -H 'Content-Type: application/json' -d \'{\\\"id\\\":\\\"$pageID\\\",\\\"type\\\":\\\"page\\\",\\\"title\\\":\\\"$pageName\\\",\\\"body\\\":{\\\"storage\\\":{\\\"value\\\":\\\"$pageMessage\\\",\\\"representation\\\":\\\"storage\\\"}},\\\"version\\\":{\\\"number\\\":$pageVer}}\' https://wiki.nci.nih.gov/rest/api/content/$pageID"
-						echo "curlCMD:    $curlCMD"
 						curlError=$(eval $curlCMD)
 						echo "Confluence Error:   $curlError"
 						
