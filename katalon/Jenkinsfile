@@ -217,7 +217,7 @@ pipeline {
 						# get page version
 						#pageVer="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/434110502?expand=version.number | grep -oP '(?<=number":).*' | awk  -F, '{print $1}')"
 						#pageVer="$(curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/434110502?expand=version.number)"
-						curlCMD="curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=version.number | grep -oP '(?<=number\\\":).*' | awk -F, '{print \$1}'"
+						curlCMD="curl -D- -u $creds https://wiki.nci.nih.gov/rest/api/content/$pageID?expand=version.number | grep -oP '(?<=number\\\":).*' | awk -F, '{print \\$1}'"
 						echo "curlCMD:     $curlCMD"
 						pageVer=$(eval $curlCMD)
 						echo "pageVer:     $pageVer"
