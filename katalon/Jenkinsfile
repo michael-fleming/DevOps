@@ -98,7 +98,7 @@ pipeline {
                     switch("${params.Profile}") {
                     case "QA_ICDC":
 						WIKI_PAGE="434110502"
-						WIKI_NAME='ICDC Automated Test Results'
+						WIKI_NAME="ICDC Automated Test Results"
 						withCredentials([string(credentialsId: 'Box_Email_QA_ICDC', variable: 'box_email')]) {
                             BOX_EMAIL="${box_email}"
                             }
@@ -111,7 +111,7 @@ pipeline {
                         break
                     case "QA_CTDC":
 						WIKI_PAGE="434110839"
-						WIKI_NAME='CTDC Automated Test Results'
+						WIKI_NAME="CTDC Automated Test Results"
 						withCredentials([string(credentialsId: 'Box_Email_QA_CTDC', variable: 'box_email')]) {
                             BOX_EMAIL="${box_email}"
                             }
