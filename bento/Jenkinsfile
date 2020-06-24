@@ -36,15 +36,6 @@ pipeline {
 		}
 	}
 	parameters {
-    gitParameter(branchFilter: 'origin/(.*)', 
-        defaultValue: 'master', 
-        name: 'Backend_Tag', 
-        type: 'PT_BRANCH_TAG',
-        quickFilterEnabled: false, 
-        selectedValue: 'DEFAULT', 
-        sortMode: 'ASCENDING_SMART', 
-        tagFilter: '*', 
-        useRepository: 'https://github.com/CBIIT/bento-backend')
 	gitParameter(branchFilter: 'origin/(.*)', 
         defaultValue: 'master', 
         name: 'Frontend_Tag', 
@@ -54,6 +45,15 @@ pipeline {
         sortMode: 'ASCENDING_SMART', 
         tagFilter: '*', 
         useRepository: 'https://github.com/CBIIT/bento-frontend')
+    gitParameter(branchFilter: 'origin/(.*)', 
+        defaultValue: 'master', 
+        name: 'Backend_Tag', 
+        type: 'PT_BRANCH_TAG',
+        quickFilterEnabled: false, 
+        selectedValue: "${params.Frontend_Tag", 
+        sortMode: 'ASCENDING_SMART', 
+        tagFilter: '*', 
+        useRepository: 'https://github.com/CBIIT/bento-backend')
     extendedChoice( 
         name: 'Environment', 
         defaultValue: 'dev', 
