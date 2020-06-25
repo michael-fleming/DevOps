@@ -89,6 +89,7 @@ pipeline {
 
   			dir('icdc-devops'){
   				git branch: 'master',
+				    poll: false,
     				url: 'https://github.com/CBIIT/icdc-devops.git'
   			}
         
