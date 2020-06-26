@@ -93,7 +93,9 @@ pipeline {
 				scm: [$class: 'GitSCM', 
 				branches: [[name: '*/master']], 
 				doGenerateSubmoduleConfigurations: false, 
-				extensions: [[$class: 'RelativeTargetDirectory', 
+				extensions: [[$class: 'DisableRemotePoll'],
+				[$class: 'PathRestriction', excludedRegions: '*'], 
+				[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'icdc-devops']], 
 				submoduleCfg: [], 
 				userRemoteConfigs: 
