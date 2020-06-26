@@ -96,6 +96,15 @@ pipeline {
 				submoduleCfg: [], 
 				userRemoteConfigs: 
 				[[url: 'https://github.com/CBIIT/icdc-devops.git']]]
+				
+			checkout poll: false, scm: [$class: 'GitSCM', 
+				branches: [[name: '*/master']], 
+				doGenerateSubmoduleConfigurations: false, 
+				extensions: [[$class: 'RelativeTargetDirectory', 
+				relativeTargetDir: 'test-checkout']], 
+				submoduleCfg: [], 
+				userRemoteConfigs: 
+				[[url: 'https://github.com/michael-fleming/testdocs.git']]]
         
         }
  
