@@ -97,11 +97,14 @@ pipeline {
 				userRemoteConfigs: 
 				[[url: 'https://github.com/CBIIT/icdc-devops.git']]])
 				
-			checkout([$class: 'GitSCM', 
+			checkout(
+				poll:false,
+				changelog:false,
+				scm: [$class: 'GitSCM', 
 				branches: [[name: '*/master']], 
 				doGenerateSubmoduleConfigurations: false, 
 				extensions: [[$class: 'DisableRemotePoll'],
-				[$class: 'PathRestriction', excludedRegions: '', includedRegions: '*'],
+				[$class: 'PathRestriction', excludedRegions: '*'],
 				[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'test-checkout']], 
 				submoduleCfg: [], 
