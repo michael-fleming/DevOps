@@ -88,23 +88,25 @@ pipeline {
 				userRemoteConfigs: 
 				[[url: 'https://github.com/CBIIT/bento-frontend']]])
 
-  			checkout poll: false, scm: [$class: 'GitSCM', 
+  			checkout( poll: false, scm: [$class: 'GitSCM', 
 				branches: [[name: '*/master']], 
 				doGenerateSubmoduleConfigurations: false, 
 				extensions: [[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'icdc-devops']], 
 				submoduleCfg: [], 
 				userRemoteConfigs: 
-				[[url: 'https://github.com/CBIIT/icdc-devops.git']]]
+				[[url: 'https://github.com/CBIIT/icdc-devops.git']]])
 				
-			checkout poll: false, scm: [$class: 'GitSCM', 
+			checkout([$class: 'GitSCM', 
 				branches: [[name: '*/master']], 
 				doGenerateSubmoduleConfigurations: false, 
-				extensions: [[$class: 'RelativeTargetDirectory', 
+				extensions: [[$class: 'DisableRemotePoll'],
+				[$class: 'PathRestriction', excludedRegions: '', includedRegions: '*'],
+				[$class: 'RelativeTargetDirectory', 
 				relativeTargetDir: 'test-checkout']], 
 				submoduleCfg: [], 
 				userRemoteConfigs: 
-				[[url: 'https://github.com/michael-fleming/testdocs.git']]]
+				[[url: 'https://github.com/michael-fleming/testdocs.git']]])
         
         }
  
