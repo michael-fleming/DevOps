@@ -63,9 +63,7 @@ pipeline {
 //        value: 'sandbox,dev,test,qa,stage,prod' )
 //  }
   options {
-    [$class: 'JiraProjectProperty'],
 	buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), 
-	[$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false], 
 	parameters(
 		[gitParameter(branch: '', 
 			branchFilter: 'origin/(.*)', 
