@@ -45,15 +45,15 @@ pipeline {
         sortMode: 'ASCENDING_SMART', 
         tagFilter: '*', 
         useRepository: 'https://github.com/CBIIT/bento-frontend')
-    gitParameter(branchFilter: 'origin/(.*)', 
-        defaultValue: 'Integration', 
-        name: 'Backend_Tag', 
-        type: 'PT_BRANCH_TAG',
-        quickFilterEnabled: false, 
-        selectedValue: 'DEFAULT', 
-        sortMode: 'ASCENDING_SMART', 
-        tagFilter: '*', 
-        useRepository: 'https://github.com/CBIIT/bento-backend')
+//    gitParameter(branchFilter: 'origin/(.*)', 
+//        defaultValue: 'Integration', 
+//        name: 'Backend_Tag', 
+//        type: 'PT_BRANCH_TAG',
+//        quickFilterEnabled: false, 
+//        selectedValue: 'DEFAULT', 
+//        sortMode: 'ASCENDING_SMART', 
+//        tagFilter: '*', 
+//        useRepository: 'https://github.com/CBIIT/bento-backend')
     extendedChoice( 
         name: 'Environment', 
         defaultValue: 'dev', 
