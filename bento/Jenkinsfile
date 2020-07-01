@@ -36,6 +36,12 @@ pipeline {
 		}
 	}
 	parameters {
+    extendedChoice( 
+        name: 'Environment', 
+        defaultValue: 'dev', 
+        description: 'Choose the environment to build', 
+        type: 'PT_SINGLE_SELECT',
+        value: 'sandbox,dev,test,qa,stage,prod' )
 	gitParameter(branchFilter: 'origin/(.*)', 
         defaultValue: 'integration', 
         name: 'Frontend_Tag', 
@@ -54,12 +60,6 @@ pipeline {
 //        sortMode: 'ASCENDING_SMART', 
 //        tagFilter: '*', 
 //        useRepository: 'https://github.com/CBIIT/bento-backend')
-    extendedChoice( 
-        name: 'Environment', 
-        defaultValue: 'dev', 
-        description: 'Choose the environment to build', 
-        type: 'PT_SINGLE_SELECT',
-        value: 'sandbox,dev,test,qa,stage,prod' )
   }
   options {
   	ansiColor('xterm')
