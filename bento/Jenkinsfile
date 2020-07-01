@@ -63,7 +63,7 @@ pipeline {
 //        value: 'sandbox,dev,test,qa,stage,prod' )
 //  }
   options {
-    [[$class: 'JiraProjectProperty'],
+    [$class: 'JiraProjectProperty'],
 	buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), 
 	[$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false], 
 	parameters(
@@ -112,7 +112,7 @@ pipeline {
 			value: 'sandbox,dev,test,qa,stage,prod', 
 			visibleItemCount: 5)]), 
 	pipelineTriggers([pollSCM('H/5 * * * *')]),
-	ansiColor('xterm')]
+	ansiColor('xterm')
   }
   tools {
   	maven 'Default' 
