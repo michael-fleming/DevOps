@@ -69,7 +69,7 @@ pipeline {
             }
           }
 
-        return tagnames''']]])
+        return tagnames''']]]
 	extendedChoice( 
         name: 'Environment', 
         defaultValue: 'dev', 
