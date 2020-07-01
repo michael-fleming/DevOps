@@ -46,16 +46,31 @@ pipeline {
         sortMode: 'ASCENDING_SMART', 
         tagFilter: '*', 
         useRepository: 'https://github.com/CBIIT/bento-frontend')
-    gitParameter(branchFilter: 'origin/(.*)', 
-        defaultValue: 'Integration', 
+	[$class: 'CascadeChoiceParameter', 
+        choiceType: 'PT_SINGLE_SELECT', 
+        description: '', 
+        filterLength: 1, 
+        filterable: false, 
         name: 'Backend_Tag', 
-        type: 'PT_BRANCH_TAG',
-        quickFilterEnabled: false, 
-        selectedValue: 'DEFAULT', 
-        sortMode: 'ASCENDING_SMART', 
-        tagFilter: '*', 
-        useRepository: 'https://github.com/CBIIT/bento-backend')
-    extendedChoice( 
+        randomName: 'choice-parameter-155542053406439', 
+        referencedParameters: 'Frontend_Tag', 
+        script: [$class: 'GroovyScript', 
+        fallbackScript: [classpath: [], sandbox: false, script: 'return [\'ERROR\']'], 
+        script: [classpath: [], sandbox: false, 
+        script: '''front_tag = Frontend_Tag
+        def gettags = ("git ls-remote -h -t https://github.com/CBIIT/bento-backend.git").execute()
+        def tags = gettags.text.readLines().collect { it.split()[1].replaceAll(\'refs/heads/\', \'\').replaceAll(\'refs/tags/\', \'\').replaceAll("\\\\^\\\\{\\\\}", \'\')}
+        List tagnames = tags.collect{ \'\' + it + \'\'}
+
+        for(int i=0; i < tagnames.size(); i++) {
+          if(tagnames.get(i).equalsIgnoreCase(front_tag)) {
+            new_value = tagnames[i] + \':selected\'
+            tagnames.set(i, new_value);
+            }
+          }
+
+        return tagnames''']]])
+	extendedChoice( 
         name: 'Environment', 
         defaultValue: 'dev', 
         description: 'Choose the environment to build', 
