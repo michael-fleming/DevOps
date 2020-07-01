@@ -63,7 +63,7 @@ pipeline {
 //        value: 'sandbox,dev,test,qa,stage,prod' )
 //  }
   options {
-	buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), 
+	buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3'))
 	parameters(
 		[gitParameter(branch: '', 
 			branchFilter: 'origin/(.*)', 
@@ -108,8 +108,8 @@ pipeline {
 			saveJSONParameterToFile: false, 
 			type: 'PT_SINGLE_SELECT', 
 			value: 'sandbox,dev,test,qa,stage,prod', 
-			visibleItemCount: 5)]), 
-	pipelineTriggers([pollSCM('H/5 * * * *')]),
+			visibleItemCount: 5)])
+	pipelineTriggers([pollSCM('H/5 * * * *')])
 	ansiColor('xterm')
   }
   tools {
