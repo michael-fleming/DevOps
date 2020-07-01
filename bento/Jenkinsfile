@@ -46,8 +46,7 @@ pipeline {
         sortMode: 'ASCENDING_SMART', 
         tagFilter: '*', 
         useRepository: 'https://github.com/CBIIT/bento-frontend')
-	[$class: 'CascadeChoiceParameter', 
-        choiceType: 'PT_SINGLE_SELECT', 
+	CascadeChoiceParameter(choiceType: 'PT_SINGLE_SELECT', 
         description: '', 
         filterLength: 1, 
         filterable: false, 
@@ -69,7 +68,7 @@ pipeline {
             }
           }
 
-        return tagnames''']]]
+        return tagnames''']])
 	extendedChoice( 
         name: 'Environment', 
         defaultValue: 'dev', 
