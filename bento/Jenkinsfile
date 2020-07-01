@@ -111,8 +111,8 @@ pipeline {
 			type: 'PT_SINGLE_SELECT', 
 			value: 'sandbox,dev,test,qa,stage,prod', 
 			visibleItemCount: 5)]), 
-	pipelineTriggers([pollSCM('H/5 * * * *')])],
-  	ansiColor('xterm')
+	pipelineTriggers([pollSCM('H/5 * * * *')]),
+	ansiColor('xterm')]
   }
   tools {
   	maven 'Default' 
