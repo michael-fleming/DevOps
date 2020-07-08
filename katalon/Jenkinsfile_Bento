@@ -1,26 +1,25 @@
-//node('docker-ansible') {
-//	parameters {
-//		extendedChoice( 
-//			name: 'Browser', 
-//			defaultValue: 'Chrome', 
-//			description: 'Choose the browser (headless) to use', 
-//			type: 'PT_SINGLE_SELECT',
-//			value: 'Chrome,Firefox' )
-//		}
-//	stage('set agent'){
-//		if (params.Browser == 'Firefox') {
-//			AGENT_LABEL = "docker-katalon"
-//			} else {
-//				AGENT_LABEL = "docker-ansible"
-//				}
-//		}
-//	}
+node('docker-bento') {
+	parameters {
+		extendedChoice( 
+			name: 'Browser', 
+			defaultValue: 'Chrome', 
+			description: 'Choose the browser (headless) to use', 
+			type: 'PT_SINGLE_SELECT',
+			value: 'Chrome,Firefox' )
+		}
+	stage('set agent'){
+		if (params.Browser == 'Firefox') {
+			AGENT_LABEL = "docker-bento"
+			} else {
+				AGENT_LABEL = "docker-bento-ff"
+				}
+		}
+	}
 
 pipeline {
 	agent {
         node {
-//            label "${AGENT_LABEL}"
-            label "docker-bento"
+            label "${AGENT_LABEL}"
             }
         }
 	environment { 
@@ -57,10 +56,10 @@ pipeline {
 		
 	extendedChoice( 
         name: 'Profile', 
-        defaultValue: 'QA_ICDC', 
+        defaultValue: 'QA_BENTO', 
         description: 'Choose the profile to use', 
         type: 'PT_SINGLE_SELECT',
-        value: 'QA_ICDC,QA_CTDC' )
+        value: 'QA_BENTO' )
 
 	string(defaultValue: '', 
         description: 'Enter a list of email addresses to notify in case of test failures:', 
@@ -97,60 +96,36 @@ pipeline {
 			steps {
                 script {
                     switch("${params.Profile}") {
-                    case "QA_ICDC":
+                    case "QA_Bento":
 						WIKI_PAGE="434110502"
-						WIKI_NAME="ICDC"
+						WIKI_NAME="BENTO"
 						//withCredentials([string(credentialsId: 'Box_Email_QA_ICDC', variable: 'box_email')]) {
                         //    BOX_EMAIL="${box_email}"
                         //    }
 						//withCredentials([string(credentialsId: 'Box_Url_QA_ICDC', variable: 'box_url')]) {
 						//	BOX_URL="${box_url}"
                         //    }
-                        withCredentials([file(credentialsId: 'Katalon_QA_ICDC', variable: 'pass_file')]) {
+                        withCredentials([file(credentialsId: 'Katalon_QA_BENTO', variable: 'pass_file')]) {
                             sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
                             }
                         break
-                    case "QA_CTDC":
-						WIKI_PAGE="434110839"
-						WIKI_NAME="CTDC"
-						withCredentials([string(credentialsId: 'Box_Email_QA_CTDC', variable: 'box_email')]) {
-                            BOX_EMAIL="${box_email}"
-                            }
-						withCredentials([string(credentialsId: 'Box_Url_QA_CTDC', variable: 'box_url')]) {
-							BOX_URL="${box_url}"
-                            }
-                        withCredentials([file(credentialsId: 'Katalon_QA_CTDC', variable: 'pass_file')]) {
-                            sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
-                            }
-                        break
+                    //case "QA_CTDC":
+					//	WIKI_PAGE="434110839"
+					//	WIKI_NAME="CTDC"
+					//	withCredentials([string(credentialsId: 'Box_Email_QA_CTDC', variable: 'box_email')]) {
+                    //        BOX_EMAIL="${box_email}"
+                    //        }
+					//	withCredentials([string(credentialsId: 'Box_Url_QA_CTDC', variable: 'box_url')]) {
+					//		BOX_URL="${box_url}"
+                    //        }
+                    //    withCredentials([file(credentialsId: 'Katalon_QA_CTDC', variable: 'pass_file')]) {
+                    //        sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
+                    //        }
+                    //    break
                        }
                     }
 				}
 			}
-//        stage('set Environment'){
-//            steps {
-//			
-//                script {
-//
-//						sh "wget https://github.com/katalon-studio/katalon-studio/releases/download/v${env.katalonVer}/Katalon_Studio_Engine_Linux_64-${env.katalonVer}.tar.gz && tar -xvzf Katalon_Studio_Engine_Linux_64-${env.katalonVer}.tar.gz && mv Katalon_Studio_Engine_Linux_64-${env.katalonVer} katalon && chown -R root:root katalon"
-//
-//				    }
-//
-//				script {
-//                    switch("${params.Browser}") {
-//                    case "Firefox":
-//						//sh "wget https://github.com/mozilla/geckodriver/releases/download/v${env.geckodriverVer}/geckodriver-v${env.geckodriverVer}-linux64.tar.gz && mv katalon/configuration/resources/drivers/firefox_linux64/geckodriver katalon/configuration/resources/drivers/firefox_linux64/geckodriver.bak && tar -C katalon/configuration/resources/drivers/firefox_linux64/ -xzf geckodriver-v${env.geckodriverVer}-linux64.tar.gz && chown root:root katalon/configuration/resources/drivers/firefox_linux64/geckodriver && yum -y install firefox"
-//						sh "wget https://github.com/mozilla/geckodriver/releases/download/v${env.geckodriverVer}/geckodriver-v${env.geckodriverVer}-linux64.tar.gz && mv katalon/configuration/resources/drivers/firefox_linux64/geckodriver katalon/configuration/resources/drivers/firefox_linux64/geckodriver.bak && tar -C katalon/configuration/resources/drivers/firefox_linux64/ -xzf geckodriver-v${env.geckodriverVer}-linux64.tar.gz && chown root:root katalon/configuration/resources/drivers/firefox_linux64/geckodriver"
-//						break
-//                    case "Chrome":
-//						//sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && yum -y install google-chrome-stable_current_x86_64.rpm && wget https://chromedriver.storage.googleapis.com/${env.chromedriverVer}/chromedriver_linux64.zip && mv katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver.bak && unzip chromedriver_linux64.zip -d katalon/configuration/resources/drivers/chromedriver_linux64/"
-//						sh "wget https://chromedriver.storage.googleapis.com/${env.chromedriverVer}/chromedriver_linux64.zip && mv katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver katalon/configuration/resources/drivers/chromedriver_linux64/chromedriver.bak && unzip chromedriver_linux64.zip -d katalon/configuration/resources/drivers/chromedriver_linux64/"
-//						break
-//                       }
-//                    }
-//
-//                }
-//            }
 		stage('run tests'){
             environment {
 				KATALON_BROWSER     =   "${params.Browser}"
@@ -173,7 +148,6 @@ pipeline {
 							rm -rf results && mkdir results
 							
 							# Run Katalon Tests
-							//katalon/katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="$reportFile" -apiKey="$api_key"
 							katalonc -noSplash -runMode=console -projectPath="$WORKSPACE/$KATALON_PRJ" -retry=0 -testSuitePath="$KATALON_SUITE_PATH" -executionProfile="$KATALON_PROFILE" -browserType="$KATALON_BROWSER (headless)" -reportFolder="$WORKSPACE/results" -reportFileName="$reportFile" -apiKey="$api_key"
 
 							'''
