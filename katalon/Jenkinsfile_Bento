@@ -9,9 +9,9 @@ node('docker-bento') {
 		}
 	stage('set agent'){
 		if (params.Browser == 'Firefox') {
-			AGENT_LABEL = "docker-bento"
+			AGENT_LABEL = "docker-bento-ff"
 			} else {
-				AGENT_LABEL = "docker-bento-ff"
+				AGENT_LABEL = "docker-bento"
 				}
 		}
 	}
