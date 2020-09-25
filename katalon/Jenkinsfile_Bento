@@ -107,7 +107,7 @@ pipeline {
                         //    }
                         withCredentials([file(credentialsId: 'Katalon_QA_BENTO', variable: 'pass_file')]) {
                             PROFILE="${pass_file}"
-							sh "cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
+							sh "echo ${pass_file} && cp ${pass_file} ${WORKSPACE}/Profiles/${params.Profile}.glbl"
                             }
                         break
                     //case "QA_CTDC":
