@@ -83,9 +83,9 @@ pipeline {
 					submoduleCfg: [], 
                     userRemoteConfigs: [[url: 'https://github.com/CBIIT/Commons_Automation']]])
 
-                dir('icdc-devops'){
-                    git branch: 'master',
-                    url: 'https://github.com/CBIIT/icdc-devops.git'}
+//                dir('icdc-devops'){
+  //                  git branch: 'master',
+    //                url: 'https://github.com/CBIIT/icdc-devops.git'}
 
                 }
             }
