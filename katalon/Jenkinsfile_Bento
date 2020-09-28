@@ -1,4 +1,4 @@
-node('docker-bento') {
+node('docker-katalon-ch') {
 	parameters {
 		extendedChoice( 
 			name: 'Browser', 
@@ -9,9 +9,9 @@ node('docker-bento') {
 		}
 	stage('set agent'){
 		if (params.Browser == 'Firefox') {
-			AGENT_LABEL = "docker-bento-ff"
+			AGENT_LABEL = "docker-katalon-ff"
 			} else {
-				AGENT_LABEL = "docker-bento"
+				AGENT_LABEL = "docker-katalon-ch"
 				}
 		}
 	}
