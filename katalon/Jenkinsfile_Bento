@@ -96,7 +96,7 @@ pipeline {
 			steps {
                 script {
                     switch("${params.Profile}") {
-                    case "QA_Bento":
+                    case "QA_BENTO":
 						WIKI_PAGE="434110502"
 						WIKI_NAME="BENTO"
 						//withCredentials([string(credentialsId: 'Box_Email_QA_ICDC', variable: 'box_email')]) {
@@ -157,7 +157,7 @@ pipeline {
 							profile_name="${profile_file%.*}"
 							cp Profiles/$KATALON_PROFILE.glbl Profiles/$profile_file
 							
-							echo "projectPath=$KATALON_PRJ testSuitePath=$KATALON_SUITE_PATH executionProfile=$profile_name profileFile-$PROFILE_FILE filename=$profile_file"
+							echo "projectPath=$KATALON_PRJ testSuitePath=$KATALON_SUITE_PATH executionProfile=$profile_name profileFile=$PROFILE_FILE filename=$profile_file"
 							ls -la Profiles
 							
 							# Run Katalon Tests
