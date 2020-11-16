@@ -1,0 +1,45 @@
+pipeline {
+	agent {
+		node {
+			label 'cicd_microservice'
+		}
+	}
+
+  }
+  options {
+  	ansiColor('xterm')
+  }
+  tools {
+  	maven 'Default' 
+    jdk 'Default' 
+  }
+  stages{
+  	stage('checkout'){
+  		steps {
+  			checkout([$class: 'GitSCM', 
+  				branches: [[name: "master"]], 
+  				doGenerateSubmoduleConfigurations: 
+  				false, extensions: [], submoduleCfg: [], 
+  				userRemoteConfigs: 
+  				[[url: 'https://github.com/michael-fleming/DevOps']]])
+			}
+		}
+				
+  	stage('build'){
+ 		steps {
+ 			echo "BUILD STEP"
+ 		}
+  	}
+
+  }
+  post {
+    always {
+		echo "POST BUILD"
+    }
+	success {
+		echo "SUCCESS"
+		sh "git tag -a v1.0 -m 'Jenkins tag: v1.0' && git push --tags"
+    }
+	
+  }
+}
