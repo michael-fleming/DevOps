@@ -36,12 +36,21 @@ pipeline {
 		echo "POST BUILD"
     }
 	success {
-		withCredentials([usernamePassword(credentialsId: 'github_user', passwordVariable: 'git_password', usernameVariable: 'git_user')]) {
-			echo "SUCCESS"
-			sh "gitURL=$(git config remote.origin.url | sed 's|^.*//||') && git tag --no-sign -a v1.0 -m 'Jenkins tag: v1.0' && git push https://$git_user:$git_password@$gitURL --tags"
+		script {
+			withCredentials([usernamePassword(credentialsId: 'github_user', passwordVariable: 'git_password', usernameVariable: 'git_user')]) {
+				sh label: 'GIT-Tag', script: '''#!/bin/bash
+				
+				echo "SUCCESS"
+				gitURL=$(git config remote.origin.url | sed 's|^.*//||')
+				git tag --no-sign -a v1.0 -m 'Jenkins tag: v1.0'
+				git push https://${git_user}:${git_password}@${gitURL} --tags
+				
+				'''
+			
+				}
 			}
 		
-    }
+		}
 	
   }
 }
