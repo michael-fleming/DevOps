@@ -5,7 +5,6 @@ pipeline {
 		}
 	}
 
-  }
   options {
   	ansiColor('xterm')
   }
