@@ -5,15 +5,13 @@ pipeline {
 		}
 	}
 
-  properties(
-  
-  parameters(
+  parameters{
     string(
 	    defaultValue: '',
 		description: '',
 		name: 'TAG',
 		trim: false)
-	)
+	}
 
   options {
   	ansiColor('xterm')
