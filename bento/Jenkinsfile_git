@@ -67,7 +67,7 @@ pipeline {
 				echo "$gitURL"
 				git config user.email "jenkins@bento-tools.org"
 				git config user.name "Bento Jenkins"
-				git tag --no-sign -a ${params.TAG} -m "Jenkins tag: ${params.TAG}"
+				git tag --no-sign -a ${TAG} -m "Jenkins tag: ${TAG}"
 				git push https://${git_user}:${git_password}@${gitURL} --tags
 				
 				'''
