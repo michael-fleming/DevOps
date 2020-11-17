@@ -60,7 +60,7 @@ pipeline {
 	success {
 		script {
 			withCredentials([usernamePassword(credentialsId: 'github_user', passwordVariable: 'git_password', usernameVariable: 'git_user')]) {
-				sh label: 'GIT-Tag', script: '''#!/bin/bash
+				sh label: 'GIT-Tag front', script: '''#!/bin/bash
 				
 				echo "SUCCESS"
 				gitURL=$(git config remote.origin.url | sed 's|^.*//||')
@@ -69,6 +69,23 @@ pipeline {
 				git config user.name "Bento Jenkins"
 				git tag --no-sign -a ${TAG} -m "Jenkins tag: ${TAG}"
 				git push https://${git_user}:${git_password}@${gitURL} --tags
+				
+				'''
+			
+				}
+			}
+		
+		script {
+			withCredentials([usernamePassword(credentialsId: 'github_user', passwordVariable: 'git_password', usernameVariable: 'git_user')]) {
+				sh label: 'GIT-Tag back', script: '''#!/bin/bash
+				
+				echo "SUCCESS"
+				gitURL=$(git config remote.origin.url | sed 's|^.*//||')
+				echo "$gitURL"
+				git config user.email "jenkins@bento-tools.org"
+				git config user.name "Bento Jenkins"
+				echo ${TAG}
+				
 				
 				'''
 			
