@@ -5,6 +5,16 @@ pipeline {
 		}
 	}
 
+  properties(
+  
+  parameters(
+    string(
+	    defaultValue: '',
+		description: '',
+		name: 'TAG',
+		trim: false)
+	)
+
   options {
   	ansiColor('xterm')
   }
@@ -40,7 +50,7 @@ pipeline {
 				
   	stage('build'){
  		steps {
- 			echo "BUILD STEP"
+ 			echo "Building tag:   ${params.TAG}"
  		}
   	}
 
@@ -59,7 +69,7 @@ pipeline {
 				echo "$gitURL"
 				git config user.email "jenkins@bento-tools.org"
 				git config user.name "Bento Jenkins"
-				git tag --no-sign -a v1.2 -m 'Jenkins tag: v1.2'
+				git tag --no-sign -a ${params.TAG} -m "Jenkins tag: ${params.TAG}"
 				git push https://${git_user}:${git_password}@${gitURL} --tags
 				
 				'''
