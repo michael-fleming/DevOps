@@ -21,6 +21,20 @@ pipeline {
   				false, extensions: [], submoduleCfg: [], 
   				userRemoteConfigs: 
   				[[url: 'https://github.com/michael-fleming/DevOps']]])
+			
+			checkout( changelog:false,
+				poll: false,
+				scm: [$class: 'GitSCM', 
+				branches: [[name: '*/master']], 
+				doGenerateSubmoduleConfigurations: false, 
+				extensions: [[$class: 'DisableRemotePoll'],
+				[$class: 'PathRestriction', excludedRegions: '*'], 
+				[$class: 'RelativeTargetDirectory', 
+				relativeTargetDir: 'icdc-devops']], 
+				submoduleCfg: [], 
+				userRemoteConfigs: 
+				[[url: 'https://github.com/CBIIT/icdc-devops.git']]
+				])
 			}
 		}
 				
@@ -45,7 +59,7 @@ pipeline {
 				echo "$gitURL"
 				git config user.email "jenkins@bento-tools.org"
 				git config user.name "Bento Jenkins"
-				git tag --no-sign -a v1.1 -m 'Jenkins tag: v1.1'
+				git tag --no-sign -a v1.2 -m 'Jenkins tag: v1.2'
 				git push https://${git_user}:${git_password}@${gitURL} --tags
 				
 				'''
