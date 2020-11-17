@@ -42,6 +42,7 @@ pipeline {
 				
 				echo "SUCCESS"
 				gitURL=$(git config remote.origin.url | sed 's|^.*//||')
+				git config user.name "Bento Jenkins"
 				git tag --no-sign -a v1.0 -m 'Jenkins tag: v1.0'
 				git push https://${git_user}:${git_password}@${gitURL} --tags
 				
