@@ -1,6 +1,9 @@
 # use cicd-microservice container
 image: cbiitssrepo/cicd-microservice:latest
 
+stages:
+  - bridge
+
 #setenv:
 #  stage: .pre
 #  variables:
@@ -16,12 +19,12 @@ image: cbiitssrepo/cicd-microservice:latest
 #    ENVIRONMENT: bento-gitlab
 #  script: ansible-playbook devops/ansible/bento-deploy.yml -i devops/ansible/hosts
 
-bridge:
-  stage: deploy
+Bridge to Frontend:
+  stage: bridge
 #  variables:
 #    ENVIRONMENT: bento-gitlab
   trigger:
-    project: Bento/bento-frontend
+    project: 31013582
     branch: gitlab-testing
 #  needs:
 #    - job: setenv
