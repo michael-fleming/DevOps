@@ -24,7 +24,7 @@ Bridge to Frontend:
 #  variables:
 #    ENVIRONMENT: bento-gitlab
   trigger:
-    project: 31013582
+    project: 'Bento/bento-frontend'
     branch: gitlab-testing
 #  needs:
 #    - job: setenv
