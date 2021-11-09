@@ -21,7 +21,7 @@ deploy:
 #  variables:
 #    ENVIRONMENT: bento-gitlab
   trigger:
-    project: bento-frontend
+    project: Bento/bento-frontend
     branch: gitlab-testing
   needs:
     - job: setenv
