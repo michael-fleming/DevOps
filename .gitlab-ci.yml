@@ -1,14 +1,14 @@
 # use cicd-microservice container
 image: cbiitssrepo/cicd-microservice:latest
 
-setenv:
-  stage: .pre
-  variables:
-    ENVIRONMENT: bento-gitlab
-  script: echo "ENVIRONMENT=$ENVIRONMENT" >> build.env
-  artifacts:
-    reports:
-      dotenv: build.env
+#setenv:
+#  stage: .pre
+#  variables:
+#    ENVIRONMENT: bento-gitlab
+#  script: echo "ENVIRONMENT=$ENVIRONMENT" >> build.env
+#  artifacts:
+#    reports:
+#      dotenv: build.env
 
 #buildanddeploy:
 #  stage: buildanddeploy
@@ -16,13 +16,13 @@ setenv:
 #    ENVIRONMENT: bento-gitlab
 #  script: ansible-playbook devops/ansible/bento-deploy.yml -i devops/ansible/hosts
 
-deploy:
+bridge:
   stage: deploy
 #  variables:
 #    ENVIRONMENT: bento-gitlab
   trigger:
     project: Bento/bento-frontend
     branch: gitlab-testing
-  needs:
-    - job: setenv
-      artifacts: true
+#  needs:
+#    - job: setenv
+#      artifacts: true
