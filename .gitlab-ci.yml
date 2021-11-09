@@ -1,0 +1,15 @@
+# use cicd-microservice container
+image: cbiitssrepo/cicd-microservice:latest
+
+buildanddeploy:
+  stage: buildanddeploy
+  variables:
+    ENVIRONMENT: bento-gitlab
+  script: ansible-playbook devops/ansible/bento-deploy.yml -i devops/ansible/hosts
+
+deploy:
+  stage: deploy
+  variables:
+    ENVIRONMENT: bento-gitlab
+  script: echo "ENVIRONMENT=$ENVIRONMENT" >> build.env
+  trigger: bento-frontend/deploy
