@@ -20,7 +20,9 @@ deploy:
   stage: deploy
   variables:
     ENVIRONMENT: bento-gitlab
-  trigger: bento/bento-frontend
+  trigger:
+    project: bento/bento-frontend
+    branch: gitlab-test
   needs:
     - job: setenv
       artifacts: true
