@@ -2,7 +2,7 @@
 image: cbiitssrepo/cicd-microservice:latest
 
 setenv:
-  stage: setenv
+  stage: .pre
   variables:
     ENVIRONMENT: bento-gitlab
   script: echo "ENVIRONMENT=$ENVIRONMENT" >> build.env
