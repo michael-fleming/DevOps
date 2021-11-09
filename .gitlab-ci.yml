@@ -22,7 +22,7 @@ deploy:
 #    ENVIRONMENT: bento-gitlab
   trigger:
     project: Bento/bento-frontend
-    branch: gitlab-test
+    branch: gitlab-testing
   needs:
     - job: setenv
       artifacts: true
